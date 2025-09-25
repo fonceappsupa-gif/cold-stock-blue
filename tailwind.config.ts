@@ -22,7 +22,13 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
+        "ice-blue": "hsl(var(--ice-blue))",
+        "frost-blue": "hsl(var(--frost-blue))",
+        "arctic-blue": "hsl(var(--arctic-blue))",
+        "deep-blue": "hsl(var(--deep-blue))",
+        "navy-blue": "hsl(var(--navy-blue))",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -84,6 +90,19 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 6s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "slide-up": "slide-up 0.6s ease-out",
+      },
+      backgroundImage: {
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-cold": "var(--gradient-cold)",
+        "gradient-arctic": "var(--gradient-arctic)",
+      },
+      boxShadow: {
+        "cold": "var(--shadow-cold)",
+        "frost": "var(--shadow-frost)",
+        "glow": "var(--shadow-glow)",
       },
     },
   },
