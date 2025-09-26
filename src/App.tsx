@@ -4,9 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./components/Landing";
-import SimpleRegister from "./components/Auth/SimpleRegister";
+import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
-import SimpleDashboard from "./components/Dashboard/SimpleDashboard";
+import SimpleAdminDashboard from "./components/Dashboard/SimpleAdminDashboard";
+import SimpleOperarioDashboard from "./components/Dashboard/SimpleOperarioDashboard";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -20,11 +21,16 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/register" element={<SimpleRegister />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={
+            <ProtectedRoute requiredRole="admin">
+              <SimpleAdminDashboard />
+            </ProtectedRoute>
+          } />
           <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <SimpleDashboard />
+            <ProtectedRoute requiredRole="operario">
+              <SimpleOperarioDashboard />
             </ProtectedRoute>
           } />
           <Route path="*" element={<NotFound />} />

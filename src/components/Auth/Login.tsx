@@ -36,7 +36,12 @@ export default function Login() {
           description: "Has iniciado sesión correctamente.",
         });
 
-        navigate('/dashboard');
+        // For demo purposes, redirect based on email domain
+        if (data.user.email?.includes('admin') || data.user.email?.includes('gerente')) {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       }
     } catch (error: any) {
       toast({

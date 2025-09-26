@@ -24,8 +24,10 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
         }
 
         setIsAuthenticated(true);
-        // Por ahora asumimos que todos son admin
-        setUserRole('admin');
+        
+        // For demo purposes, determine role based on email
+        const role = (user.email?.includes('admin') || user.email?.includes('gerente')) ? 'admin' : 'operario';
+        setUserRole(role);
       } catch (error) {
         console.error('Error checking auth:', error);
         setIsAuthenticated(false);
@@ -53,7 +55,11 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
   }
 
   if (requiredRole && userRole !== requiredRole) {
-    return <Navigate to="/dashboard" replace />;
+    if (userRole === 'admin') {
+      return <Navigate to="/admin" replace />;
+    } else {
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   return <>{children}</>;

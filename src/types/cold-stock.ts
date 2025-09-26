@@ -1,4 +1,4 @@
-// Types for the existing cold_stock schema
+// Cold Stock Database Types based on actual schema
 export interface Organizacion {
   organizacion_id: string;
   nombre: string;
@@ -11,13 +11,13 @@ export interface Perfil {
   nombre: string;
   apellido: string;
   correo: string;
-  tipo: 'admin' | 'operario';
+  tipo: string;
 }
 
 export interface Producto {
   producto_id: string;
-  organizacion_id?: string;
   nombre: string;
+  organizacion_id?: string;
 }
 
 export interface Lote {
@@ -29,6 +29,14 @@ export interface Lote {
   created_at?: string;
 }
 
+export interface StockProducto {
+  producto_id?: string;
+  producto_nombre?: string;
+  organizacion_id?: string;
+  stock_actual?: number;
+  lotes_activos?: number;
+}
+
 export interface Movimiento {
   movimiento_id: string;
   organizacion_id?: string;
@@ -38,10 +46,24 @@ export interface Movimiento {
   fecha?: string;
 }
 
-export interface StockProducto {
-  producto_id?: string;
-  producto_nombre?: string;
+export type UserRole = 'admin' | 'operario';
+
+// Helper interfaces for forms
+export interface NewProduct {
+  nombre: string;
   organizacion_id?: string;
-  stock_actual?: number;
-  lotes_activos?: number;
+}
+
+export interface NewLote {
+  organizacion_id?: string;
+  producto_id?: string;
+  cantidad: number;
+  fecha_vencimiento: string;
+}
+
+export interface NewMovimiento {
+  organizacion_id?: string;
+  producto_id?: string;
+  tipo: string;
+  cantidad: number;
 }
