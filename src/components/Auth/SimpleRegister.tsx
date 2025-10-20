@@ -1,3 +1,4 @@
+// @ts-nocheck - Esquema cold_stock no está en tipos generados
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,9 +43,46 @@ export default function SimpleRegister() {
       if (authError) throw authError;
 
       if (authData.user) {
+        // Crear organización
+        // @ts-ignore - Esquema cold_stock no está en tipos generados
+        const { data: orgData, error: orgError } = await supabase
+          .schema('cold_stock')
+          .from('organizacion')
+          .insert({
+            nombre: formData.organizationName,
+          })
+          .select()
+          .single();
+
+        if (orgError) throw orgError;
+
+        // Crear perfil de admin
+        const [nombre, ...apellidoArr] = formData.fullName.split(' ');
+        const apellido = apellidoArr.join(' ') || nombre;
+
+        if (!orgData) throw new Error("No se pudo crear la organización");
+
+        // @ts-ignore - Acceso a propiedades del esquema cold_stock
+        const orgId = (orgData as any).organizacion_id;
+
+        // @ts-ignore - Esquema cold_stock no está en tipos generados
+        const { error: perfilError } = await supabase
+          .schema('cold_stock')
+          .from('perfil')
+          .insert({
+            perfil_id: authData.user.id,
+            organizacion_id: orgId,
+            nombre: nombre,
+            apellido: apellido,
+            correo: formData.email,
+            tipo: 'admin'
+          });
+
+        if (perfilError) throw perfilError;
+
         toast({
           title: "¡Registro exitoso!",
-          description: "Tu cuenta ha sido creada correctamente. Por favor verifica tu email.",
+          description: "Tu cuenta y organización han sido creadas. Por favor verifica tu email.",
         });
 
         navigate('/login');

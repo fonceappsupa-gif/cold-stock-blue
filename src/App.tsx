@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./components/Landing";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
-import SimpleAdminDashboard from "./components/Dashboard/SimpleAdminDashboard";
+import FullAdminDashboard from "./components/Dashboard/FullAdminDashboard";
 import SimpleOperarioDashboard from "./components/Dashboard/SimpleOperarioDashboard";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import NotFound from "./pages/NotFound";
@@ -25,7 +25,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={
             <ProtectedRoute requiredRole="admin">
-              <SimpleAdminDashboard />
+              <FullAdminDashboard />
             </ProtectedRoute>
           } />
           <Route path="/dashboard" element={
