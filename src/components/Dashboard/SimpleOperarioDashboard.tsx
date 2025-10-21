@@ -1,29 +1,30 @@
+// @ts-nocheck - Esquema cold_stock no está en tipos generados
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Package, 
   AlertTriangle, 
   TrendingUp,
-  Plus,
-  BarChart3,
   LogOut,
   Snowflake,
-  ArrowUp,
-  ArrowDown
+  BarChart3
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import MovementManager from "./MovementManager";
 
 export default function SimpleOperarioDashboard() {
   const [user, setUser] = useState<any>(null);
+  const [organizacionId, setOrganizacionId] = useState<string>("");
   const [stats, setStats] = useState({
-    totalProducts: 15,
-    expiringSoon: 5,
-    totalStock: 847,
-    recentMovements: 12
+    totalProducts: 0,
+    expiringSoon: 0,
+    totalStock: 0,
+    recentMovements: 0
   });
 
   const navigate = useNavigate();
@@ -31,11 +32,81 @@ export default function SimpleOperarioDashboard() {
 
   useEffect(() => {
     fetchUserData();
+    fetchStats();
   }, []);
 
   const fetchUserData = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     setUser(user);
+    
+    if (user) {
+      // Obtener organizacion_id del perfil
+      const { data: perfilData } = await supabase
+        .schema('cold_stock')
+        .from('perfil')
+        .select('organizacion_id')
+        .eq('perfil_id', user.id)
+        .single();
+      
+      if (perfilData) {
+        setOrganizacionId((perfilData as any).organizacion_id);
+      }
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Obtener organización del usuario
+      const { data: perfilData } = await supabase
+        .schema('cold_stock')
+        .from('perfil')
+        .select('organizacion_id')
+        .eq('perfil_id', user.id)
+        .single();
+
+      if (!perfilData) return;
+
+      // Obtener estadísticas
+      const { data: productos } = await supabase
+        .schema('cold_stock')
+        .from('producto')
+        .select('*')
+        .eq('organizacion_id', perfilData.organizacion_id);
+
+      const { data: lotes } = await supabase
+        .schema('cold_stock')
+        .from('lote')
+        .select('*')
+        .eq('organizacion_id', perfilData.organizacion_id);
+
+      const { data: movimientos } = await supabase
+        .schema('cold_stock')
+        .from('movimiento')
+        .select('*')
+        .eq('organizacion_id', perfilData.organizacion_id)
+        .gte('fecha_hora', new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
+
+      const today = new Date();
+      const expiringSoon = lotes?.filter(l => {
+        const expiry = new Date(l.fecha_vencimiento);
+        const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return diffDays <= 7 && diffDays >= 0;
+      }).length || 0;
+
+      const totalStock = lotes?.reduce((sum, l) => sum + (l.cantidad || 0), 0) || 0;
+
+      setStats({
+        totalProducts: productos?.length || 0,
+        expiringSoon,
+        totalStock,
+        recentMovements: movimientos?.length || 0
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
   };
 
   const handleLogout = async () => {
@@ -49,48 +120,6 @@ export default function SimpleOperarioDashboard() {
     } else {
       navigate('/');
     }
-  };
-
-  const mockInventory = [
-    {
-      id: "1",
-      producto: "Leche Deslactosada",
-      lote: "LOT001",
-      cantidad: 45,
-      vencimiento: "2024-01-15",
-      ubicacion: "Refrigerador A1"
-    },
-    {
-      id: "2", 
-      producto: "Yogurt Natural",
-      lote: "LOT002",
-      cantidad: 78,
-      vencimiento: "2024-01-10",
-      ubicacion: "Refrigerador B2"
-    },
-    {
-      id: "3",
-      producto: "Queso Fresco",
-      lote: "LOT003", 
-      cantidad: 23,
-      vencimiento: "2024-01-08",
-      ubicacion: "Refrigerador C1"
-    }
-  ];
-
-  const getExpiryBadge = (vencimiento: string) => {
-    const expiry = new Date(vencimiento);
-    const today = new Date();
-    const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) {
-      return <Badge variant="destructive">Vencido</Badge>;
-    } else if (diffDays <= 7) {
-      return <Badge variant="destructive">Vence pronto</Badge>;
-    } else if (diffDays <= 30) {
-      return <Badge variant="secondary">Vence en {diffDays} días</Badge>;
-    }
-    return <Badge variant="outline">Vence en {diffDays} días</Badge>;
   };
 
   return (
@@ -122,23 +151,11 @@ export default function SimpleOperarioDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold">Dashboard de Inventario</h1>
-              <p className="text-muted-foreground">
-                Gestiona entradas, salidas y control de stock
-              </p>
-            </div>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Registrar Movimiento
-              </Button>
-              <Button size="sm" className="bg-gradient-primary">
-                <Plus className="h-4 w-4 mr-2" />
-                Agregar Stock
-              </Button>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold">Dashboard de Operario</h1>
+            <p className="text-muted-foreground">
+              Gestiona movimientos de inventario
+            </p>
           </div>
 
           {/* Stats Cards */}
@@ -196,100 +213,16 @@ export default function SimpleOperarioDashboard() {
             </Card>
           </div>
 
-          {/* Inventory List */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Inventario Actual</CardTitle>
-              <CardDescription>
-                Control de lotes y fechas de vencimiento
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {mockInventory.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2">
-                        <p className="font-medium">{item.producto}</p>
-                        <Badge variant="outline" className="text-xs">
-                          {item.lote}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center space-x-4 mt-1">
-                        <p className="text-sm text-muted-foreground">
-                          Stock: {item.cantidad} unidades
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          📍 {item.ubicacion}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      {getExpiryBadge(item.vencimiento)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {/* Tabs */}
+          <Tabs defaultValue="movements" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="movements">Movimientos</TabsTrigger>
+            </TabsList>
 
-          {/* Recent Movements */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Movimientos Recientes</CardTitle>
-              <CardDescription>
-                Últimas operaciones registradas
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                      <ArrowUp className="h-4 w-4 text-green-600 dark:text-green-400" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Entrada - Leche Deslactosada</p>
-                      <p className="text-sm text-muted-foreground">+50 unidades</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Hace 2 horas</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
-                      <ArrowDown className="h-4 w-4 text-red-600 dark:text-red-400" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Salida - Yogurt Natural</p>
-                      <p className="text-sm text-muted-foreground">-25 unidades</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Hace 4 horas</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                      <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Ajuste - Queso Fresco</p>
-                      <p className="text-sm text-muted-foreground">Ajuste de inventario</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Hace 6 horas</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            <TabsContent value="movements" className="space-y-4">
+              <MovementManager organizacionId={organizacionId} onUpdate={fetchStats} />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

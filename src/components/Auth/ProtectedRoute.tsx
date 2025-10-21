@@ -1,3 +1,4 @@
+// @ts-nocheck - Esquema cold_stock no está en tipos generados
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Navigate } from "react-router-dom";
@@ -25,9 +26,20 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
 
         setIsAuthenticated(true);
         
-        // For demo purposes, determine role based on email
-        const role = (user.email?.includes('admin') || user.email?.includes('gerente')) ? 'admin' : 'operario';
-        setUserRole(role);
+        // Obtener rol desde la tabla perfil en el esquema cold_stock
+        const { data: perfilData, error: perfilError } = await supabase
+          .schema('cold_stock')
+          .from('perfil')
+          .select('tipo')
+          .eq('perfil_id', user.id)
+          .single();
+
+        if (perfilError || !perfilData) {
+          console.error('Error obteniendo perfil:', perfilError);
+          setUserRole('operario'); // Default a operario si hay error
+        } else {
+          setUserRole(perfilData.tipo);
+        }
       } catch (error) {
         console.error('Error checking auth:', error);
         setIsAuthenticated(false);

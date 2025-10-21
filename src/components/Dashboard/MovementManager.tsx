@@ -28,10 +28,11 @@ interface Movement {
 }
 
 interface MovementManagerProps {
-  organizacionId: string;
+  organizacionId?: string;
+  onUpdate?: () => void;
 }
 
-export default function MovementManager({ organizacionId }: MovementManagerProps) {
+export default function MovementManager({ organizacionId, onUpdate }: MovementManagerProps) {
   const [movements, setMovements] = useState<Movement[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,10 +46,14 @@ export default function MovementManager({ organizacionId }: MovementManagerProps
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchData();
+    if (organizacionId) {
+      fetchData();
+    }
   }, [organizacionId]);
 
   const fetchData = async () => {
+    if (!organizacionId) return;
+    
     try {
       // @ts-ignore - Esquema cold_stock no está en tipos generados
       const { data: productsData, error: productsError } = await supabase
@@ -134,6 +139,11 @@ export default function MovementManager({ organizacionId }: MovementManagerProps
       setFormData({ producto_id: "", tipo: "entrada", cantidad: 0, fecha_vencimiento: "" });
       setIsDialogOpen(false);
       fetchData();
+      
+      // Llamar callback de actualización si existe
+      if (onUpdate) {
+        onUpdate();
+      }
     } catch (error: any) {
       toast({
         title: "Error",

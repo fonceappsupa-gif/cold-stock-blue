@@ -11,7 +11,8 @@ import {
   BarChart3,
   LogOut,
   Snowflake,
-  ArrowUpDown
+  ArrowUpDown,
+  Building2
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import ProductManager from "./ProductManager";
 import OperatorManager from "./OperatorManager";
 import MovementManager from "./MovementManager";
+import OrganizationManager from "./OrganizationManager";
 
 export default function FullAdminDashboard() {
   const [user, setUser] = useState<any>(null);
@@ -222,8 +224,12 @@ export default function FullAdminDashboard() {
           </div>
 
           {/* Tabs de gestión */}
-          <Tabs defaultValue="products" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+          <Tabs defaultValue="organization" className="w-full">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="organization">
+                <Building2 className="h-4 w-4 mr-2" />
+                Organización
+              </TabsTrigger>
               <TabsTrigger value="products">
                 <Package className="h-4 w-4 mr-2" />
                 Productos
@@ -237,6 +243,9 @@ export default function FullAdminDashboard() {
                 Movimientos
               </TabsTrigger>
             </TabsList>
+            <TabsContent value="organization" className="mt-6">
+              <OrganizationManager organizacionId={organizacionId} />
+            </TabsContent>
             <TabsContent value="products" className="mt-6">
               <ProductManager organizacionId={organizacionId} />
             </TabsContent>
