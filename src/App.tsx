@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./components/Landing";
-import Register from "./components/Auth/Register";
+import SimpleRegister from "./components/Auth/SimpleRegister";
 import Login from "./components/Auth/Login";
 import FullAdminDashboard from "./components/Dashboard/FullAdminDashboard";
 import SimpleOperarioDashboard from "./components/Dashboard/SimpleOperarioDashboard";
@@ -21,7 +21,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<SimpleRegister />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={
             <ProtectedRoute requiredRole="admin">
