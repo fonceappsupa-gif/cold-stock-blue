@@ -12,7 +12,7 @@ import {
   LogOut,
   Snowflake,
   ArrowUpDown,
-  Building2
+  LineChart
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -20,11 +20,12 @@ import { useToast } from "@/hooks/use-toast";
 import ProductManager from "./ProductManager";
 import OperatorManager from "./OperatorManager";
 import MovementManager from "./MovementManager";
-import OrganizationManager from "./OrganizationManager";
+import DataDashboard from "./DataDashboard";
 
 export default function FullAdminDashboard() {
   const [user, setUser] = useState<any>(null);
   const [organizacionId, setOrganizacionId] = useState<string>("");
+  const [organizacionNombre, setOrganizacionNombre] = useState<string>("");
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOperators: 0,
@@ -58,8 +59,10 @@ export default function FullAdminDashboard() {
 
         if (perfilData) {
           // @ts-ignore - Acceso a propiedades del esquema cold_stock
-          setOrganizacionId((perfilData as any).organizacion_id);
-          fetchStats((perfilData as any).organizacion_id);
+          const orgId = (perfilData as any).organizacion_id;
+          setOrganizacionId(orgId);
+          fetchStats(orgId);
+          fetchOrganizacionNombre(orgId);
         }
       }
     } catch (error: any) {
@@ -68,6 +71,24 @@ export default function FullAdminDashboard() {
         description: error.message || "No se pudo cargar la información del usuario",
         variant: "destructive",
       });
+    }
+  };
+
+  const fetchOrganizacionNombre = async (orgId: string) => {
+    try {
+      const { data, error } = await supabase
+        .schema('cold_stock')
+        .from('organizacion')
+        .select('nombre')
+        .eq('organizacion_id', orgId)
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setOrganizacionNombre((data as any).nombre || "");
+      }
+    } catch (error: any) {
+      console.error("Error fetching organization name:", error);
     }
   };
 
@@ -141,7 +162,7 @@ export default function FullAdminDashboard() {
             <div className="flex items-center space-x-2">
               <Snowflake className="h-8 w-8 text-primary" />
               <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Cold Stock
+                {organizacionNombre || "Cold Stock"}
               </span>
               <Badge variant="secondary">Admin</Badge>
             </div>
@@ -224,11 +245,11 @@ export default function FullAdminDashboard() {
           </div>
 
           {/* Tabs de gestión */}
-          <Tabs defaultValue="organization" className="w-full">
+          <Tabs defaultValue="data" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="organization">
-                <Building2 className="h-4 w-4 mr-2" />
-                Organización
+              <TabsTrigger value="data">
+                <LineChart className="h-4 w-4 mr-2" />
+                Datos
               </TabsTrigger>
               <TabsTrigger value="products">
                 <Package className="h-4 w-4 mr-2" />
@@ -243,8 +264,8 @@ export default function FullAdminDashboard() {
                 Movimientos
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="organization" className="mt-6">
-              <OrganizationManager organizacionId={organizacionId} />
+            <TabsContent value="data" className="mt-6">
+              <DataDashboard organizacionId={organizacionId} />
             </TabsContent>
             <TabsContent value="products" className="mt-6">
               <ProductManager organizacionId={organizacionId} />

@@ -20,6 +20,7 @@ import MovementManager from "./MovementManager";
 export default function SimpleOperarioDashboard() {
   const [user, setUser] = useState<any>(null);
   const [organizacionId, setOrganizacionId] = useState<string>("");
+  const [organizacionNombre, setOrganizacionNombre] = useState<string>("");
   const [stats, setStats] = useState({
     totalProducts: 0,
     expiringSoon: 0,
@@ -49,8 +50,28 @@ export default function SimpleOperarioDashboard() {
         .single();
       
       if (perfilData) {
-        setOrganizacionId((perfilData as any).organizacion_id);
+        const orgId = (perfilData as any).organizacion_id;
+        setOrganizacionId(orgId);
+        fetchOrganizacionNombre(orgId);
       }
+    }
+  };
+
+  const fetchOrganizacionNombre = async (orgId: string) => {
+    try {
+      const { data, error } = await supabase
+        .schema('cold_stock')
+        .from('organizacion')
+        .select('nombre')
+        .eq('organizacion_id', orgId)
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setOrganizacionNombre((data as any).nombre || "");
+      }
+    } catch (error: any) {
+      console.error("Error fetching organization name:", error);
     }
   };
 
@@ -131,7 +152,7 @@ export default function SimpleOperarioDashboard() {
             <div className="flex items-center space-x-2">
               <Snowflake className="h-8 w-8 text-primary" />
               <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Cold Stock
+                {organizacionNombre || "Cold Stock"}
               </span>
               <Badge variant="secondary">Operario</Badge>
             </div>
