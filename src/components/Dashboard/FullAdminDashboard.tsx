@@ -146,12 +146,12 @@ export default function FullAdminDashboard() {
         };
       }));
 
-      const expiringSoon7 = lotesConProductos.filter(l => l.dias_para_vencer <= 7 && l.dias_para_vencer >= 0).length;
-      const expiringSoon3 = lotesConProductos.filter(l => l.dias_para_vencer <= 3 && l.dias_para_vencer >= 0).length;
+      const expiringSoon7 = lotesConProductos.filter(l => l.dias_para_vencer <= 7 && l.dias_para_vencer >= 0 && l.cantidad > 0).length;
+      const expiringSoon3 = lotesConProductos.filter(l => l.dias_para_vencer <= 3 && l.dias_para_vencer >= 0 && l.cantidad > 0).length;
       
-      // Ordenar por días para vencer (los más próximos primero)
+      // Ordenar por días para vencer (los más próximos primero) y filtrar lotes con stock > 0
       const sortedExpiringLots = lotesConProductos
-        .filter(l => l.dias_para_vencer >= 0 && l.dias_para_vencer <= 7)
+        .filter(l => l.dias_para_vencer >= 0 && l.dias_para_vencer <= 7 && l.cantidad > 0)
         .sort((a, b) => a.dias_para_vencer - b.dias_para_vencer);
 
       setExpiringLots(sortedExpiringLots);
