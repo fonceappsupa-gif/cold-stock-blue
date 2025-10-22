@@ -23,10 +23,12 @@ export default function SimpleOperarioDashboard() {
   const [organizacionNombre, setOrganizacionNombre] = useState<string>("");
   const [stats, setStats] = useState({
     totalProducts: 0,
-    expiringSoon: 0,
+    expiringSoon7: 0,
+    expiringSoon3: 0,
     totalStock: 0,
     recentMovements: 0
   });
+  const [expiringLots, setExpiringLots] = useState<any[]>([]);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -111,17 +113,40 @@ export default function SimpleOperarioDashboard() {
         .gte('fecha_hora', new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
 
       const today = new Date();
-      const expiringSoon = lotes?.filter(l => {
-        const expiry = new Date(l.fecha_vencimiento);
+      const lotesConProductos = await Promise.all((lotes || []).map(async (lote: any) => {
+        const { data: producto } = await supabase
+          .schema('cold_stock')
+          .from('producto')
+          .select('nombre')
+          .eq('producto_id', lote.producto_id)
+          .single();
+        
+        const expiry = new Date(lote.fecha_vencimiento);
         const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays <= 7 && diffDays >= 0;
-      }).length || 0;
+        
+        return {
+          ...lote,
+          producto_nombre: producto?.nombre || 'Desconocido',
+          dias_para_vencer: diffDays
+        };
+      }));
+
+      const expiringSoon7 = lotesConProductos.filter(l => l.dias_para_vencer <= 7 && l.dias_para_vencer >= 0).length;
+      const expiringSoon3 = lotesConProductos.filter(l => l.dias_para_vencer <= 3 && l.dias_para_vencer >= 0).length;
+      
+      // Ordenar por días para vencer (los más próximos primero)
+      const sortedExpiringLots = lotesConProductos
+        .filter(l => l.dias_para_vencer >= 0 && l.dias_para_vencer <= 7)
+        .sort((a, b) => a.dias_para_vencer - b.dias_para_vencer);
+
+      setExpiringLots(sortedExpiringLots);
 
       const totalStock = lotes?.reduce((sum, l) => sum + (l.cantidad || 0), 0) || 0;
 
       setStats({
         totalProducts: productos?.length || 0,
-        expiringSoon,
+        expiringSoon7,
+        expiringSoon3,
         totalStock,
         recentMovements: movimientos?.length || 0
       });
@@ -180,7 +205,7 @@ export default function SimpleOperarioDashboard() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <Card className="hover:shadow-cold transition-all duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Productos</CardTitle>
@@ -209,13 +234,26 @@ export default function SimpleOperarioDashboard() {
 
             <Card className="hover:shadow-cold transition-all duration-300 border-destructive/20">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Próximos a Vencer</CardTitle>
+                <CardTitle className="text-sm font-medium">Vencen en 7 días</CardTitle>
                 <AlertTriangle className="h-4 w-4 text-destructive" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-destructive">{stats.expiringSoon}</div>
+                <div className="text-2xl font-bold text-destructive">{stats.expiringSoon7}</div>
                 <p className="text-xs text-muted-foreground">
-                  En los próximos 7 días
+                  Lotes próximos
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-cold transition-all duration-300 border-destructive/40">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Vencen en 3 días</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-destructive" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-destructive">{stats.expiringSoon3}</div>
+                <p className="text-xs text-muted-foreground">
+                  Lotes críticos
                 </p>
               </CardContent>
             </Card>
@@ -233,6 +271,50 @@ export default function SimpleOperarioDashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Lotes Próximos a Vencer */}
+          {expiringLots.length > 0 && (
+            <Card className="border-destructive/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                  Lotes Próximos a Vencer
+                </CardTitle>
+                <CardDescription>
+                  Productos que requieren atención urgente
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {expiringLots.map((lote) => (
+                    <div 
+                      key={lote.lote_id} 
+                      className={`flex items-center justify-between p-3 rounded-lg border ${
+                        lote.dias_para_vencer <= 3 ? 'bg-destructive/10 border-destructive/30' : 'bg-muted/50'
+                      }`}
+                    >
+                      <div className="flex-1">
+                        <p className="font-medium">{lote.producto_nombre}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Lote: {lote.numero_lote} • Cantidad: {lote.cantidad}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <Badge variant={lote.dias_para_vencer <= 3 ? "destructive" : "secondary"}>
+                          {lote.dias_para_vencer === 0 ? 'Vence hoy' : 
+                           lote.dias_para_vencer === 1 ? 'Vence mañana' : 
+                           `${lote.dias_para_vencer} días`}
+                        </Badge>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {new Date(lote.fecha_vencimiento).toLocaleDateString('es-ES')}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Tabs */}
           <Tabs defaultValue="movements" className="space-y-4">
