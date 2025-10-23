@@ -124,10 +124,11 @@ export default function FullAdminDashboard() {
       const { data: lotes } = await supabase
         .schema('cold_stock')
         .from('lote')
-        .select('lote_id, numero_lote, fecha_vencimiento, cantidad, producto_id')
+        .select('lote_id, fecha_vencimiento, cantidad, producto_id')
         .eq('organizacion_id', orgId);
 
       const today = new Date();
+      console.log("Fecha de hoy",today)
       const lotesConProductos = await Promise.all((lotes || []).map(async (lote: any) => {
         const { data: producto } = await supabase
           .schema('cold_stock')
@@ -138,7 +139,8 @@ export default function FullAdminDashboard() {
         
         const expiry = new Date(lote.fecha_vencimiento);
         const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        
+        console.log("Fecha de vencimiento",expiry)
+        console.log("Diferencia de dias",diffDays)
         return {
           ...lote,
           producto_nombre: producto?.nombre || 'Desconocido',
@@ -317,7 +319,7 @@ export default function FullAdminDashboard() {
                       <div className="flex-1">
                         <p className="font-medium">{lote.producto_nombre}</p>
                         <p className="text-sm text-muted-foreground">
-                          Lote: {lote.numero_lote} • Cantidad: {lote.cantidad}
+                          Lote: {lote.lote_id} • Cantidad: {lote.cantidad}
                         </p>
                       </div>
                       <div className="text-right">

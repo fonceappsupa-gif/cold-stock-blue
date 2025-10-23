@@ -52,14 +52,14 @@ export default function DataDashboard({ organizacionId }: DataDashboardProps) {
         .from('movimiento')
         .select('*')
         .eq('organizacion_id', organizacionId)
-        .order('fecha_hora', { ascending: false })
+        .order('fecha', { ascending: false })
         .limit(30);
 
       if (error) throw error;
 
       // Agrupar por día y tipo de movimiento
       const grouped = (data || []).reduce((acc: any, mov: any) => {
-        const fecha = new Date(mov.fecha_hora).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+        const fecha = new Date(mov.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
         const existing = acc.find((item: any) => item.fecha === fecha);
         
         if (existing) {

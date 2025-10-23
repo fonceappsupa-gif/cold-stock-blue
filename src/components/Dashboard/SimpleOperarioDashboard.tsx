@@ -110,7 +110,7 @@ export default function SimpleOperarioDashboard() {
         .from('movimiento')
         .select('*')
         .eq('organizacion_id', perfilData.organizacion_id)
-        .gte('fecha_hora', new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
+        .gte('fecha', new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
 
       const today = new Date();
       const lotesConProductos = await Promise.all((lotes || []).map(async (lote: any) => {
@@ -296,7 +296,7 @@ export default function SimpleOperarioDashboard() {
                       <div className="flex-1">
                         <p className="font-medium">{lote.producto_nombre}</p>
                         <p className="text-sm text-muted-foreground">
-                          Lote: {lote.numero_lote} • Cantidad: {lote.cantidad}
+                          Lote: {lote.lote_id} • Cantidad: {lote.cantidad}
                         </p>
                       </div>
                       <div className="text-right">
