@@ -59,7 +59,10 @@ export default function DataDashboard({ organizacionId }: DataDashboardProps) {
 
       // Agrupar por día y tipo de movimiento
       const grouped = (data || []).reduce((acc: any, mov: any) => {
-        const fecha = new Date(mov.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+        // Convertir fecha a UTC-5 (Colombia)
+        const fechaMovimiento = new Date(mov.fecha);
+        const fechaColombia = new Date(fechaMovimiento.getTime() - (5 * 60 * 60 * 1000));
+        const fecha = fechaColombia.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', timeZone: 'America/Bogota' });
         const existing = acc.find((item: any) => item.fecha === fecha);
         
         if (existing) {

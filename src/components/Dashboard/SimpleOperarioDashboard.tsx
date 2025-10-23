@@ -120,14 +120,15 @@ export default function SimpleOperarioDashboard() {
           .eq('producto_id', lote.producto_id)
           .single();
         
-        // Calcular días usando UTC para evitar problemas de zona horaria
-        const hoy = new Date();
-        const hoyUTC = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+        // Calcular días usando UTC-5 (Colombia)
+        const ahora = new Date();
+        const hoyColombia = new Date(ahora.getTime() - (5 * 60 * 60 * 1000));
+        const hoyInicio = new Date(hoyColombia.getFullYear(), hoyColombia.getMonth(), hoyColombia.getDate());
         
-        const fechaVencimiento = new Date(lote.fecha_vencimiento);
-        const vencimientoUTC = Date.UTC(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
+        const fechaVencimiento = new Date(lote.fecha_vencimiento + 'T00:00:00-05:00');
+        const vencimientoInicio = new Date(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
         
-        const diasParaVencer = Math.ceil((vencimientoUTC - hoyUTC) / (1000 * 60 * 60 * 24));
+        const diasParaVencer = Math.ceil((vencimientoInicio.getTime() - hoyInicio.getTime()) / (1000 * 60 * 60 * 24));
         
         return {
           ...lote,
