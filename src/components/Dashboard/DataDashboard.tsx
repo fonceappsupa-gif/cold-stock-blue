@@ -61,9 +61,9 @@ export default function DataDashboard({ organizacionId }: DataDashboardProps) {
       const grouped = (data || []).reduce((acc: any, mov: any) => {
         const fecha = new Date(mov.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
         const existing = acc.find((item: any) => item.fecha === fecha);
-        console.log(existing)
+        
         if (existing) {
-          if (mov.tipo_movimiento === 'entrada') {
+          if (mov.tipo === 'entrada') {
             existing.entradas += mov.cantidad;
           } else {
             existing.salidas += mov.cantidad;
@@ -71,8 +71,8 @@ export default function DataDashboard({ organizacionId }: DataDashboardProps) {
         } else {
           acc.push({
             fecha,
-            entradas: mov.tipo_movimiento === 'entrada' ? mov.cantidad : 0,
-            salidas: mov.tipo_movimiento === 'salida' ? mov.cantidad : 0,
+            entradas: mov.tipo === 'entrada' ? mov.cantidad : 0,
+            salidas: mov.tipo === 'salida' ? mov.cantidad : 0,
           });
         }
         return acc;

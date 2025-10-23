@@ -112,7 +112,6 @@ export default function SimpleOperarioDashboard() {
         .eq('organizacion_id', perfilData.organizacion_id)
         .gte('fecha', new Date(new Date().setHours(0, 0, 0, 0)).toISOString());
 
-      const today = new Date();
       const lotesConProductos = await Promise.all((lotes || []).map(async (lote: any) => {
         const { data: producto } = await supabase
           .schema('cold_stock')
@@ -121,13 +120,19 @@ export default function SimpleOperarioDashboard() {
           .eq('producto_id', lote.producto_id)
           .single();
         
-        const expiry = new Date(lote.fecha_vencimiento);
-        const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        // Calcular días usando UTC para evitar problemas de zona horaria
+        const hoy = new Date();
+        const hoyUTC = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+        
+        const fechaVencimiento = new Date(lote.fecha_vencimiento);
+        const vencimientoUTC = Date.UTC(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
+        
+        const diasParaVencer = Math.ceil((vencimientoUTC - hoyUTC) / (1000 * 60 * 60 * 24));
         
         return {
           ...lote,
           producto_nombre: producto?.nombre || 'Desconocido',
-          dias_para_vencer: diffDays
+          dias_para_vencer: diasParaVencer
         };
       }));
 

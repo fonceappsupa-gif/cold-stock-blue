@@ -127,8 +127,6 @@ export default function FullAdminDashboard() {
         .select('lote_id, fecha_vencimiento, cantidad, producto_id')
         .eq('organizacion_id', orgId);
 
-      const today = new Date();
-      console.log("Fecha de hoy",today)
       const lotesConProductos = await Promise.all((lotes || []).map(async (lote: any) => {
         const { data: producto } = await supabase
           .schema('cold_stock')
@@ -137,14 +135,19 @@ export default function FullAdminDashboard() {
           .eq('producto_id', lote.producto_id)
           .single();
         
-        const expiry = new Date(lote.fecha_vencimiento);
-        const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        console.log("Fecha de vencimiento",expiry)
-        console.log("Diferencia de dias",diffDays)
+        // Calcular días usando UTC para evitar problemas de zona horaria
+        const hoy = new Date();
+        const hoyUTC = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+        
+        const fechaVencimiento = new Date(lote.fecha_vencimiento);
+        const vencimientoUTC = Date.UTC(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
+        
+        const diasParaVencer = Math.ceil((vencimientoUTC - hoyUTC) / (1000 * 60 * 60 * 24));
+        
         return {
           ...lote,
           producto_nombre: producto?.nombre || 'Desconocido',
-          dias_para_vencer: diffDays
+          dias_para_vencer: diasParaVencer
         };
       }));
 
