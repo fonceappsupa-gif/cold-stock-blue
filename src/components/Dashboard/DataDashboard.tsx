@@ -61,7 +61,7 @@ export default function DataDashboard({ organizacionId }: DataDashboardProps) {
       const grouped = (data || []).reduce((acc: any, mov: any) => {
         const fecha = new Date(mov.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
         const existing = acc.find((item: any) => item.fecha === fecha);
-        
+        console.log(existing)
         if (existing) {
           if (mov.tipo_movimiento === 'entrada') {
             existing.entradas += mov.cantidad;
@@ -77,7 +77,7 @@ export default function DataDashboard({ organizacionId }: DataDashboardProps) {
         }
         return acc;
       }, []);
-
+      
       setMovimientosData(grouped.reverse().slice(-10));
     } catch (error: any) {
       console.error("Error fetching movements data:", error);
