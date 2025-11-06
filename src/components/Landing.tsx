@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import canvasImage from "@/assets/business-model-canvas.jpg";
+import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
 
 export default function Landing() {
   return (
@@ -224,37 +224,7 @@ export default function Landing() {
             </p>
           </div>
 
-          {/* Canvas Image Preview */}
-          <div className="mb-12 flex justify-center">
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="relative cursor-pointer group max-w-md">
-                  <Card className="overflow-hidden hover:shadow-frost transition-all duration-300">
-                    <img 
-                      src={canvasImage} 
-                      alt="Business Model Canvas" 
-                      className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground rounded-full p-3">
-                        <Maximize2 className="h-6 w-6" />
-                      </div>
-                    </div>
-                  </Card>
-                  <p className="text-sm text-muted-foreground text-center mt-3">
-                    Haz clic para ampliar
-                  </p>
-                </div>
-              </DialogTrigger>
-              <DialogContent className="max-w-6xl w-full">
-                <img 
-                  src={canvasImage} 
-                  alt="Business Model Canvas - Vista ampliada" 
-                  className="w-full h-auto"
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
+
 
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Fila 1: Socios, Actividades y Propuesta de Valor */}
@@ -397,7 +367,40 @@ export default function Landing() {
                 </ul>
               </CardContent>
             </Card>
+                                {/* Canvas Image Preview */}
+          <div className="mb-12 flex justify-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="relative cursor-pointer group max-w-md">
+                  <Card className="overflow-hidden hover:shadow-frost transition-all duration-300">
+                    <img 
+                      src={canvasImage} 
+                      alt="Business Model Canvas" 
+                      className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground rounded-full p-3">
+                        <Maximize2 className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </Card>
+                  <p className="text-sm text-muted-foreground text-center mt-3">
+                    Haz clic para ampliar
+                  </p>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl w-full">
+                <img 
+                  src={canvasImage} 
+                  alt="Business Model Canvas - Vista ampliada" 
+                  className="w-full h-auto"
+                />
+              </DialogContent>
+            </Dialog>
           </div>
+          </div>
+
+
         </div>
       </section>
 
