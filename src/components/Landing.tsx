@@ -211,6 +211,158 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Business Model Canvas Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Modelo Canvas</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Nuestro modelo de negocio diseñado para entregar valor a nuestros clientes
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Fila 1: Socios, Actividades y Propuesta de Valor */}
+            <Card className="hover:shadow-cold transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-lg">Socios Clave</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Proveedores de infraestructura cloud</li>
+                  <li>• Partners tecnológicos</li>
+                  <li>• Empresas de logística y distribución</li>
+                  <li>• Asesores en gestión de inventarios</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-cold transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-lg">Actividades Clave</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Desarrollo y mantenimiento de software</li>
+                  <li>• Soporte técnico y atención al cliente</li>
+                  <li>• Actualización de funcionalidades</li>
+                  <li>• Análisis de datos y mejora continua</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-cold transition-all duration-300 lg:row-span-2 bg-gradient-cold">
+              <CardHeader>
+                <CardTitle className="text-lg">Propuesta de Valor</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Control inteligente de caducidad</li>
+                  <li>• Reducción de desperdicios</li>
+                  <li>• Dashboards en tiempo real</li>
+                  <li>• Alertas automáticas</li>
+                  <li>• Gestión multiusuario</li>
+                  <li>• Trazabilidad completa</li>
+                  <li>• Implementación rápida</li>
+                  <li>• Interfaz intuitiva</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Fila 2: Recursos y continuación de Propuesta de Valor */}
+            <Card className="hover:shadow-cold transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-lg">Recursos Clave</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Plataforma tecnológica escalable</li>
+                  <li>• Equipo de desarrollo especializado</li>
+                  <li>• Base de datos segura</li>
+                  <li>• Sistema de alertas automatizado</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-cold transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-lg">Relaciones con Clientes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Asistencia personalizada</li>
+                  <li>• Soporte técnico continuo</li>
+                  <li>• Actualizaciones automáticas</li>
+                  <li>• Comunidad de usuarios</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Fila 3: Canales y Segmentos */}
+            <div className="lg:col-span-2">
+              <div className="grid sm:grid-cols-2 gap-6">
+                <Card className="hover:shadow-cold transition-all duration-300">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Canales</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Plataforma web</li>
+                      <li>• Marketing digital</li>
+                      <li>• Recomendaciones directas</li>
+                      <li>• Eventos del sector</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover:shadow-cold transition-all duration-300">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Segmentos de Clientes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Restaurantes y cafeterías</li>
+                      <li>• Supermercados y tiendas</li>
+                      <li>• Almacenes y distribuidores</li>
+                      <li>• Empresas de catering</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <Card className="hover:shadow-cold transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-lg">Estructura de Costos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Infraestructura y hosting</li>
+                  <li>• Desarrollo y mantenimiento</li>
+                  <li>• Soporte y atención al cliente</li>
+                  <li>• Marketing y ventas</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Fila 4: Fuentes de Ingresos */}
+            <Card className="lg:col-span-2 hover:shadow-cold transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-lg">Fuentes de Ingresos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Suscripciones mensuales/anuales por usuario</li>
+                  <li>• Planes empresariales personalizados</li>
+                  <li>• Servicios de implementación y capacitación</li>
+                  <li>• Consultoría especializada en gestión de inventarios</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t bg-card py-12">
         <div className="container mx-auto px-4">
