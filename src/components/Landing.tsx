@@ -229,10 +229,12 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Proveedores de infraestructura cloud</li>
-                  <li>• Partners tecnológicos</li>
-                  <li>• Empresas de logística y distribución</li>
-                  <li>• Asesores en gestión de inventarios</li>
+                  <li>• Proveedores de equipos de refrigeración: aliados para ofrecer ColdStock como complemento a sus servicios</li>
+                  <li>• Proveedores tecnológicos (AWS, Azure): garantizan la estabilidad, seguridad y escalabilidad del sistema</li>
+                  <li>• Cámara de Comercio de Bucaramanga: acompañamiento en formalización empresarial</li>
+                  <li>• SENA y entidades de apoyo al emprendimiento: asesoría, formación y validación del modelo de negocio</li>
+                  <li>• Empresas aliadas del sector alimentos y logística: primeras en implementar pilotos del sistema</li>
+                  <li>• Desarrolladores externos para integración con sensores IoT y nuevas funcionalidades</li>
                 </ul>
               </CardContent>
             </Card>
@@ -243,10 +245,11 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Desarrollo y mantenimiento de software</li>
-                  <li>• Soporte técnico y atención al cliente</li>
-                  <li>• Actualización de funcionalidades</li>
-                  <li>• Análisis de datos y mejora continua</li>
+                  <li>• Desarrollo, actualización y mantenimiento del software.</li>
+                  <li>• Monitoreo en la nube y soporte técnico continuo</li>
+                  <li>• Capacitación virtual para clientes nuevos</li>
+                  <li>• Estrategias de marketing digital y demostraciones personalizadas</li>
+                  <li>• Alianzas comerciales con proveedores de equipos de refrigeración</li>
                 </ul>
               </CardContent>
             </Card>
@@ -257,14 +260,10 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Control inteligente de caducidad</li>
-                  <li>• Reducción de desperdicios</li>
-                  <li>• Dashboards en tiempo real</li>
-                  <li>• Alertas automáticas</li>
-                  <li>• Gestión multiusuario</li>
-                  <li>• Trazabilidad completa</li>
-                  <li>• Implementación rápida</li>
-                  <li>• Interfaz intuitiva</li>
+                  <li>• Solución 100 % en la nube, accesible desde cualquier dispositivo</li>
+                  <li>• Alertas inteligentes sobre fechas de vencimiento y niveles de stock</li>
+                  <li>• Reportes automatizados que ahorran tiempo y evitan errores humanos</li>
+                  <li>• Interfaz intuitiva, creada para que cualquier empleado pueda usarla sin conocimientos técnicos</li>
                 </ul>
               </CardContent>
             </Card>
@@ -276,10 +275,11 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Plataforma tecnológica escalable</li>
-                  <li>• Equipo de desarrollo especializado</li>
-                  <li>• Base de datos segura</li>
-                  <li>• Sistema de alertas automatizado</li>
+                  <li>• Equipo humano: desarrolladores Full Stack, soporte técnico, asesor comercial</li>
+                  <li>• Infraestructura en la nube (AWS o Azure)</li>
+                  <li>• Plataforma web y app ColdStock</li>
+                  <li>• Licencias, registro de marca y dominio web</li>
+                  <li>• Material promocional y redes sociales</li>
                 </ul>
               </CardContent>
             </Card>
@@ -290,10 +290,11 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Asistencia personalizada</li>
-                  <li>• Soporte técnico continuo</li>
-                  <li>• Actualizaciones automáticas</li>
-                  <li>• Comunidad de usuarios</li>
+                  <li>• Atención personalizada con soporte técnico remoto y chat en línea</li>
+                  <li>• Capacitación inicial incluida en la suscripción</li>
+                  <li>• Canal de comunicación directo por email y WhatsApp</li>
+                  <li>• Estrategia de fidelización: descuentos por referidos y upgrades de plan</li>
+                  <li>• Reportes automáticos que fortalecen la confianza del cliente</li>
                 </ul>
               </CardContent>
             </Card>
@@ -307,10 +308,11 @@ export default function Landing() {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li>• Plataforma web</li>
-                      <li>• Marketing digital</li>
-                      <li>• Recomendaciones directas</li>
-                      <li>• Eventos del sector</li>
+                      <li>• Página web oficial con registro de prueba gratuita</li>
+                      <li>• Redes sociales (Instagram, Facebook, LinkedIn)</li>
+                      <li>• Contacto directo con empresas y visitas comerciales</li>
+                      <li>• Alianzas con distribuidores y cámaras de comercio</li>
+                      <li>• Ferias locales y eventos del sector de alimentos y tecnología</li>
                     </ul>
                   </CardContent>
                 </Card>
@@ -321,10 +323,10 @@ export default function Landing() {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li>• Restaurantes y cafeterías</li>
-                      <li>• Supermercados y tiendas</li>
-                      <li>• Almacenes y distribuidores</li>
-                      <li>• Empresas de catering</li>
+                      <li>• Restaurantes, panaderías y hoteles que almacenan alimentos perecederos</li>
+                      <li>• Supermercados, frigoríficos y distribuidores de alimentos que manejan grandes volúmenes</li>
+                      <li>• Empresas del sector farmacéutico que requieren trazabilidad de medicamentos y vacunas</li>
+                      <li>• PYMES del área metropolitana de Bucaramanga con proyección nacional</li>
                     </ul>
                   </CardContent>
                 </Card>
@@ -337,10 +339,11 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Infraestructura y hosting</li>
-                  <li>• Desarrollo y mantenimiento</li>
-                  <li>• Soporte y atención al cliente</li>
-                  <li>• Marketing y ventas</li>
+                  <li>• Desarrollo, mantenimiento y alojamiento en la nube</li>
+                  <li>• Nómina del equipo técnico y comercial</li>
+                  <li>• Marketing digital y publicidad</li>
+                  <li>• Licencias de software, registro de marca y gastos legales</li>
+                  <li>• Equipos y suscripciones tecnológicas</li>
                 </ul>
               </CardContent>
             </Card>
