@@ -415,7 +415,7 @@ export default function Landing() {
               </span>
             </div>
             <p className="text-muted-foreground">
-              © 2024 Cold Stock. Gestión inteligente de inventarios con control de caducidad.
+              © 2025 Cold Stock. Gestión inteligente de inventarios con control de caducidad.
             </p>
           </div>
         </div>
