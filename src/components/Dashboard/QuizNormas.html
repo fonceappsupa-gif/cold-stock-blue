@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Normas de Calidad — Ingeniería de Software</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #9aa4b2;
+      --accent: #7c3aed;
+      --accent-2: #06b6d4;
+      --glass: rgba(255,255,255,0.04);
+      color-scheme: dark;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%, #071023 100%);color:#e6eef8}
+    .container{max-width:1100px;margin:36px auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:20px;box-shadow:0 6px 18px rgba(0,0,0,0.5)}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+    .controls{display:flex;align-items:center;gap:10px}
+    button.btn{background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:8px;color:inherit;cursor:pointer}
+    button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#031024}
+
+    main{margin-top:20px;display:grid;grid-template-columns:1fr 360px;gap:18px}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .norm-card{padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .norm-card h3{margin:6px 0 2px;font-size:15px}
+    .norm-card p{margin:0;color:var(--muted);font-size:13px}
+
+    .accordion-item{border-top:1px solid rgba(255,255,255,0.02);padding:10px 0}
+    .acc-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .acc-body{margin-top:8px;color:var(--muted);font-size:14px;display:none}
+
+    .checklist{display:flex;flex-direction:column;gap:8px}
+    .check{display:flex;gap:10px;align-items:center}
+    .check input{width:18px;height:18px}
+
+    .meter{height:12px;background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden}
+    .meter > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .6s ease}
+
+    .quiz .q{margin-bottom:12px}
+    .options{display:flex;flex-direction:column;gap:6px}
+    .option{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);cursor:pointer}
+    .option.selected{outline:2px solid rgba(124,58,237,0.25)}
+
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* responsive */
+    @media(max-width:900px){main{grid-template-columns:1fr} .controls{flex-wrap:wrap}}
+
+    /* micro-interactions */
+    .pulse{animation:pulse 2s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    /* printable */
+    @media print{body{color:black;background:white} .no-print{display:none}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">SQ</div>
+        <div>
+          <h1>Normas de Calidad — Ingeniería de Software</h1>
+          <p class="lead">Resumen interactivo de estándares, métricas y buenas prácticas para asegurar calidad en proyectos SW.</p>
+        </div>
+      </div>
+      <div class="controls no-print">
+        <button class="btn" id="toggleTheme">🌙 Modo</button>
+        <button class="btn" id="printBtn">🖨️ Imprimir</button>
+        <button class="btn" id="downloadBtn">⬇️ Descargar HTML</button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="card">
+          <h2>¿Qué son las normas de calidad?</h2>
+          <p class="lead">Las normas son marcos y guías que ayudan a garantizar que el software cumpla requisitos de funcionalidad, fiabilidad, usabilidad, eficiencia, mantenibilidad y portabilidad. Aquí verás: estándares, métricas y actividades prácticas para implantar calidad desde el inicio.</p>
+
+          <div style="margin-top:14px" class="grid-3">
+            <div class="norm-card">
+              <h3>ISO/IEC 25010</h3>
+              <p>Modelo de calidad del producto — define características como seguridad, rendimiento, funcionalidad y mantenibilidad.</p>
+            </div>
+            <div class="norm-card">
+              <h3>ISO/IEC 12207</h3>
+              <p>Procesos del ciclo de vida del software — define procesos para desarrollar, operar y mantener SW.</p>
+            </div>
+            <div class="norm-card">
+              <h3>ISO 9001</h3>
+              <p>Sistema de gestión de calidad — aplica a procesos organizativos que impactan la calidad del software.</p>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="accordion">
+            <div class="accordion-item">
+              <div class="acc-head" data-target="acc1"><strong>ISO/IEC 25010 — características</strong> <span>▸</span></div>
+              <div class="acc-body" id="acc1">
+                <ul>
+                  <li><strong>Funcionalidad:</strong> cumplimiento de requisitos.</li>
+                  <li><strong>Fiabilidad:</strong> comportamiento estable ante fallos.</li>
+                  <li><strong>Usabilidad:</strong> facilidad de uso.</li>
+                  <li><strong>Eficiencia:</strong> uso adecuado de recursos.</li>
+                  <li><strong>Mantenibilidad:</strong> facilidad para modificar y corregir.</li>
+                  <li><strong>Portabilidad:</strong> facilidad para ejecutar en distintos entornos.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="acc-head" data-target="acc2"><strong>ISO/IEC 12207 — procesos clave</strong> <span>▸</span></div>
+              <div class="acc-body" id="acc2">
+                <p class="lead">Incluye procesos de oferta, adquisición, suministro, desarrollo, operación, mantenimiento y soporte. Integra gestión, infraestructura y mejora continua.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h2>Checklist rápido para una entrega mínima viable (MVP)</h2>
+          <div class="checklist" id="checklist">
+            <label class="check"><input type="checkbox" data-key="req" /> Requisitos documentados y validados</label>
+            <label class="check"><input type="checkbox" data-key="arch" /> Arquitectura revisada (diagramas + decisiones)
+            </label>
+            <label class="check"><input type="checkbox" data-key="test" /> Plan de pruebas (unitarias, integración, E2E)
+            </label>
+            <label class="check"><input type="checkbox" data-key="ci" /> Integración continua configurada
+            </label>
+            <label class="check"><input type="checkbox" data-key="sec" /> Análisis básico de seguridad (dependencias y auth)
+            </label>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="meter" aria-hidden>
+              <i id="meterFill"></i>
+            </div>
+            <p id="meterText" style="margin-top:8px;color:var(--muted)">Progreso: 0/5</p>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn" id="resetChecklist">Restablecer</button>
+            <button class="primary" id="exportChecklist">Exportar checklist</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h2>Mini-quiz: Evalúa tus conocimientos</h2>
+          <div class="quiz" id="quiz">
+            <div class="q" data-answer="c">
+              <strong>1.</strong> ¿Qué norma define un modelo de calidad de producto con características como mantenibilidad y portabilidad?
+              <div class="options">
+                <div class="option" data-value="a">ISO 9001</div>
+                <div class="option" data-value="b">ISO/IEC 12207</div>
+                <div class="option" data-value="c">ISO/IEC 25010</div>
+                <div class="option" data-value="d">IEEE 829</div>
+              </div>
+            </div>
+
+            <div class="q" data-answer="b">
+              <strong>2.</strong> ¿Cuál se enfoca en los procesos del ciclo de vida del software?
+              <div class="options">
+                <div class="option" data-value="a">ISO 9001</div>
+                <div class="option" data-value="b">ISO/IEC 12207</div>
+                <div class="option" data-value="c">ISO/IEC 25010</div>
+                <div class="option" data-value="d">CMMI</div>
+              </div>
+            </div>
+
+            <div class="q" data-answer="d">
+              <strong>3.</strong> ¿Cuál es una métrica típica para evaluar la mantenibilidad?
+              <div class="options">
+                <div class="option" data-value="a">Tasa de conversión</div>
+                <div class="option" data-value="b">Rendimiento por usuario</div>
+                <div class="option" data-value="c">SLA de disponibilidad</div>
+                <div class="option" data-value="d">Complejidad ciclomática</div>
+              </div>
+            </div>
+
+            <div class="q" data-answer="a">
+              <strong>4.</strong> ¿Qué práctica ayuda a mejorar la calidad del código día a día?
+              <div class="options">
+                <div class="option" data-value="a">Revisiones de código (code review)</div>
+                <div class="option" data-value="b">Eliminar documentación</div>
+                <div class="option" data-value="c">Resetear la base de datos en producción</div>
+                <div class="option" data-value="d">Evitar tests</div>
+              </div>
+            </div>
+
+            <div class="q" data-answer="c">
+              <strong>5.</strong> ¿Cuál de estas acciones ayuda más a la seguridad del software?
+              <div class="options">
+                <div class="option" data-value="a">Aumentar la tipografía</div>
+                <div class="option" data-value="b">Reducir pruebas</div>
+                <div class="option" data-value="c">Escaneo de dependencias y pruebas de penetración</div>
+                <div class="option" data-value="d">Publicar claves en repositorio</div>
+              </div>
+            </div>
+
+            <div style="margin-top:10px;display:flex;gap:8px">
+              <button class="btn" id="checkQuiz">Revisar respuestas</button>
+              <button class="btn" id="resetQuiz">Reiniciar</button>
+            </div>
+            <p id="quizResult" style="margin-top:8px;color:var(--muted)"></p>
+          </div>
+        </div>
+
+      </section>
+
+      <aside>
+        <div class="card">
+          <h3>Resumen rápido</h3>
+          <p class="lead">Sugerencias prácticas para comenzar:</p>
+          <ol style="color:var(--muted);font-size:14px">
+            <li>Definir criterios de aceptación claros.</li>
+            <li>Configurar CI/CD y pipelines de prueba.</li>
+            <li>Automatizar pruebas y análisis estático.</li>
+            <li>Adoptar revisiones de código y métricas continuas.</li>
+          </ol>
+
+          <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0" />
+
+          <h4>Plantillas útiles</h4>
+          <ul style="color:var(--muted);font-size:14px">
+            <li><button class="btn" id="showTemplate">Plantilla - Plan de Pruebas</button></li>
+            <li><button class="btn" id="showTemplate2">Plantilla - Reporte de QA</button></li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h4>Atajos</h4>
+          <p style="color:var(--muted);font-size:14px">Usa la sección de checklist y el quiz para familiarizar al equipo en 5–10 min.</p>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button class="btn" id="toggleChecklistPanel">Mostrar/Ocultar checklist</button>
+            <button class="btn" id="copySummary">Copiar resumen</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="no-print">
+      Creado para aprendizaje y difusión de buenas prácticas — puedes descargar esta página o pedirme que la adapte a tu plantilla.
+    </footer>
+  </div>
+
+  <script>
+    // Theme toggle (light/dark simplified)
+    const btnTheme = document.getElementById('toggleTheme');
+    btnTheme.addEventListener('click', ()=>{
+      const root = document.documentElement;
+      if(root.style.colorScheme === 'light'){
+        root.style.colorScheme = 'dark';
+        document.body.style.background = 'linear-gradient(180deg,var(--bg) 0%, #071023 100%)';
+        btnTheme.textContent = '🌙 Modo';
+      } else {
+        root.style.colorScheme = 'light';
+        document.body.style.background = 'linear-gradient(180deg,#f7fbff 0%, #eef6ff 100%)';
+        btnTheme.textContent = '☀️ Claro';
+      }
+    });
+
+    // Accordion
+    document.querySelectorAll('.acc-head').forEach(h => {
+      h.addEventListener('click', ()=>{
+        const id = h.dataset.target;
+        const body = document.getElementById(id);
+        const open = body.style.display === 'block';
+        document.querySelectorAll('.acc-body').forEach(b=>b.style.display='none');
+        if(!open) body.style.display = 'block';
+      });
+    });
+
+    // Checklist progress
+    const checks = document.querySelectorAll('#checklist input[type=checkbox]');
+    const meterFill = document.getElementById('meterFill');
+    const meterText = document.getElementById('meterText');
+    function updateMeter(){
+      const total = checks.length;
+      const done = Array.from(checks).filter(c=>c.checked).length;
+      const pct = Math.round((done/total)*100);
+      meterFill.style.width = pct + '%';
+      meterText.textContent = `Progreso: ${done}/${total}`;
+    }
+    checks.forEach(c=>c.addEventListener('change', updateMeter));
+    document.getElementById('resetChecklist').addEventListener('click', ()=>{checks.forEach(c=>c.checked=false);updateMeter();});
+    updateMeter();
+
+    // Export checklist (simple JSON file)
+    document.getElementById('exportChecklist').addEventListener('click', ()=>{
+      const items = Array.from(checks).map(c=>({text: c.parentElement.textContent.trim(), checked: c.checked}));
+      const blob = new Blob([JSON.stringify({generated: new Date().toISOString(), items}, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'checklist_mvp.json'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Quiz logic
+    document.querySelectorAll('.quiz .option').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        const parent = opt.closest('.q');
+        parent.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+      });
+    });
+    document.getElementById('checkQuiz').addEventListener('click', ()=>{
+      const qs = document.querySelectorAll('.quiz .q');
+      let score = 0;
+      qs.forEach(q=>{
+        const sel = q.querySelector('.option.selected');
+        if(sel && sel.dataset.value === q.dataset.answer) score++;
+      });
+      const out = document.getElementById('quizResult');
+      out.textContent = `Puntaje: ${score}/${qs.length} — ${score===qs.length? '¡Excelente!': score>=3 ? 'Bien hecho' : 'Recomendado repasar los conceptos.'}`;
+    });
+    document.getElementById('resetQuiz').addEventListener('click', ()=>{
+      document.querySelectorAll('.quiz .option').forEach(o=>o.classList.remove('selected'));
+      document.getElementById('quizResult').textContent = '';
+    });
+
+    // Print
+    document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+
+    // Download current HTML
+    document.getElementById('downloadBtn').addEventListener('click', ()=>{
+      const html = '<!doctype html>\\n' + document.documentElement.outerHTML;
+      const blob = new Blob([html], {type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'normas_calidad_software.html'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    // Templates
+    document.getElementById('showTemplate').addEventListener('click', ()=>{
+      alert('Plantilla - Plan de Pruebas:\n\n1. Objetivo\n2. Alcance\n3. Casos de prueba\n4. Criterios de aceptación\n5. Cronograma\n6. Responsables');
+    });
+    document.getElementById('showTemplate2').addEventListener('click', ()=>{
+      alert('Plantilla - Reporte de QA:\n\n1. Resumen ejecutivo\n2. Hallazgos críticos\n3. Métricas (coverage, bugs)\n4. Recomendaciones\n5. Seguimiento');
+    });
+
+    // Copy summary
+    document.getElementById('copySummary').addEventListener('click', async ()=>{
+      const text = 'Definir criterios de aceptación claros. Configurar CI/CD. Automatizar pruebas y análisis estático. Revisiones de código y métricas continuas.';
+      try{ await navigator.clipboard.writeText(text); alert('Resumen copiado al portapapeles'); }catch(e){ prompt('Copia manualmente este texto:', text); }
+    });
+
+    // toggle checklist panel
+    document.getElementById('toggleChecklistPanel').addEventListener('click', ()=>{
+      const el = document.getElementById('checklist');
+      el.style.display = (el.style.display==='none')? 'flex' : 'flex';
+      // simple pulse to draw attention
+      el.classList.add('pulse'); setTimeout(()=>el.classList.remove('pulse'),1200);
+    });
+
+  </script>
+</body>
+</html>
