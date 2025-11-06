@@ -11,35 +11,57 @@ import {
   ArrowRight,
   CheckCircle,
   Zap,
-  Maximize2
+  Maximize2,
+  TrendingUp,
+  Bell,
+  Lock,
+  Sparkles
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
+import { useEffect, useState } from "react";
 
 export default function Landing() {
+  const [particles, setParticles] = useState<Array<{ id: number; left: string; delay: string; duration: string }>>([]);
+
+  useEffect(() => {
+    // Generate random particles for the hero section
+    const newParticles = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 10}s`,
+      duration: `${15 + Math.random() * 20}s`
+    }));
+    setParticles(newParticles);
+  }, []);
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-hidden">
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b glass-effect sticky top-0 z-50 animate-fade-in">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Snowflake className="h-8 w-8 text-primary" />
+            <div className="flex items-center space-x-2 group">
+              <Snowflake className="h-8 w-8 text-primary transition-transform group-hover:rotate-180 duration-700" />
               <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 Cold Stock
               </span>
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/login">
-                <Button variant="ghost" className="text-muted-foreground hover:text-primary">
-                  Iniciar Sesión
+                <Button variant="ghost" className="relative overflow-hidden group">
+                  <span className="relative z-10">Iniciar Sesión</span>
+                  <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity" />
                 </Button>
               </Link>
               <Link to="/register">
-                <Button className="bg-gradient-primary shadow-cold hover:shadow-frost transition-all duration-300">
-                  Comenzar Gratis
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <Button className="bg-gradient-primary shadow-cold hover:shadow-glow hover:scale-105 transition-all duration-300 relative overflow-hidden group">
+                  <span className="relative z-10 flex items-center">
+                    Comenzar Gratis
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 shimmer" />
                 </Button>
               </Link>
             </div>
@@ -48,122 +70,182 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-arctic">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-arctic">
+        {/* Animated grid background */}
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center max-w-4xl mx-auto">
-            <Badge variant="secondary" className="mb-6 animate-pulse-glow">
-              <Zap className="h-4 w-4 mr-2" />
-              Gestión Inteligente de Inventarios
+        
+        {/* Animated particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {particles.map((particle) => (
+            <div
+              key={particle.id}
+              className="particle"
+              style={{
+                left: particle.left,
+                animationDelay: particle.delay,
+                animationDuration: particle.duration,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-arctic-blue/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+
+        <div className="container mx-auto px-4 py-20 relative z-10">
+          <div className="text-center max-w-5xl mx-auto">
+            <Badge variant="secondary" className="mb-8 animate-pulse-glow glass-effect px-6 py-2 text-base">
+              <Sparkles className="h-5 w-5 mr-2" />
+              Tecnología de Vanguardia en Gestión de Inventarios
             </Badge>
-            <h1 className="text-5xl font-bold mb-6 animate-slide-up">
-              Control Total de tu Inventario con{" "}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                Caducidad Inteligente
+            
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 animate-slide-up">
+              <span className="block mb-2">Cold Stock</span>
+              <span className="block bg-gradient-primary bg-clip-text text-transparent text-4xl md:text-5xl lg:text-6xl">
+                Gestión Inteligente de Cuartos Fríos
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 animate-slide-up">
-              Optimiza tu gestión de stock con dashboards interactivos, 
-              alertas de vencimiento automáticas y control en tiempo real.
+            
+            <p className="text-xl md:text-2xl text-muted-foreground mb-12 animate-slide-up max-w-3xl mx-auto leading-relaxed">
+              Revoluciona tu gestión de inventarios con tecnología de punta. 
+              Alertas automáticas, control en tiempo real y análisis predictivo para optimizar tu operación.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up mb-16">
               <Link to="/register">
-                <Button size="lg" className="bg-gradient-primary shadow-frost hover:shadow-glow transition-all duration-300">
-                  <Package className="mr-2 h-5 w-5" />
-                  Empezar Ahora
+                <Button size="lg" className="bg-gradient-primary shadow-frost hover:shadow-glow hover:scale-105 transition-all duration-300 px-8 py-6 text-lg group relative overflow-hidden">
+                  <span className="relative z-10 flex items-center">
+                    <Package className="mr-2 h-6 w-6" />
+                    Empezar Ahora
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 shimmer" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10">
-                <BarChart3 className="mr-2 h-5 w-5" />
+              <Button size="lg" variant="outline" className="glass-effect border-primary/30 hover:bg-primary/10 px-8 py-6 text-lg group">
+                <BarChart3 className="mr-2 h-6 w-6 group-hover:scale-110 transition-transform" />
                 Ver Demo
               </Button>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto animate-fade-in">
+              <div className="glass-effect p-6 rounded-xl hover-lift">
+                <div className="text-3xl font-bold text-primary mb-2">99.9%</div>
+                <div className="text-sm text-muted-foreground">Disponibilidad</div>
+              </div>
+              <div className="glass-effect p-6 rounded-xl hover-lift" style={{ animationDelay: '0.2s' }}>
+                <div className="text-3xl font-bold text-primary mb-2">-80%</div>
+                <div className="text-sm text-muted-foreground">Desperdicio</div>
+              </div>
+              <div className="glass-effect p-6 rounded-xl hover-lift" style={{ animationDelay: '0.4s' }}>
+                <div className="text-3xl font-bold text-primary mb-2">24/7</div>
+                <div className="text-sm text-muted-foreground">Monitoreo</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-background">
+      <section className="py-32 bg-background relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">
-              Todo lo que necesitas para gestionar tu inventario
+          <div className="text-center mb-20 animate-fade-in">
+            <Badge variant="outline" className="mb-4">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Características Principales
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Tecnología que impulsa tu negocio
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Herramientas profesionales diseñadas para simplificar la gestión de stock
-              y mantener control total sobre fechas de caducidad.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Herramientas profesionales diseñadas para maximizar eficiencia, 
+              reducir pérdidas y mantener control absoluto de tu inventario.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="hover:shadow-cold transition-all duration-300 animate-float group">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-cold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Clock className="h-6 w-6 text-primary" />
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Clock className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Control de Caducidad</CardTitle>
-                <CardDescription>
-                  Alertas automáticas y seguimiento de fechas de vencimiento para evitar pérdidas.
+                <CardTitle className="text-xl mb-3">Control de Caducidad</CardTitle>
+                <CardDescription className="text-base">
+                  Sistema inteligente de alertas que monitorea fechas de vencimiento en tiempo real, 
+                  evitando pérdidas y optimizando la rotación de productos.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 animate-float group" style={{ animationDelay: '0.2s' }}>
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-cold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <BarChart3 className="h-6 w-6 text-primary" />
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <BarChart3 className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Dashboard Interactivo</CardTitle>
-                <CardDescription>
-                  Visualización en tiempo real de métricas importantes y estadísticas de inventario.
+                <CardTitle className="text-xl mb-3">Análisis en Tiempo Real</CardTitle>
+                <CardDescription className="text-base">
+                  Dashboards interactivos con métricas clave, gráficos dinámicos y 
+                  reportes automatizados para tomar decisiones informadas.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 animate-float group" style={{ animationDelay: '0.4s' }}>
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-cold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Bell className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Gestión de Equipos</CardTitle>
-                <CardDescription>
-                  Roles diferenciados para administradores y operarios con permisos específicos.
+                <CardTitle className="text-xl mb-3">Alertas Inteligentes</CardTitle>
+                <CardDescription className="text-base">
+                  Notificaciones automáticas personalizables para niveles de stock críticos, 
+                  próximos vencimientos y eventos importantes.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 animate-float group" style={{ animationDelay: '0.6s' }}>
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-cold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Shield className="h-6 w-6 text-primary" />
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Users className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Seguridad Avanzada</CardTitle>
-                <CardDescription>
-                  Acceso controlado con autenticación segura y protección de datos empresariales.
+                <CardTitle className="text-xl mb-3">Gestión de Equipos</CardTitle>
+                <CardDescription className="text-base">
+                  Sistema de roles avanzado con permisos granulares para administradores, 
+                  operarios y diferentes niveles de acceso.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 animate-float group" style={{ animationDelay: '0.8s' }}>
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-cold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Package className="h-6 w-6 text-primary" />
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Lock className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Trazabilidad Completa</CardTitle>
-                <CardDescription>
-                  Seguimiento detallado de movimientos, lotes y historial de cambios.
+                <CardTitle className="text-xl mb-3">Seguridad Total</CardTitle>
+                <CardDescription className="text-base">
+                  Encriptación de datos, autenticación multifactor y backup automático 
+                  para proteger tu información empresarial crítica.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 animate-float group" style={{ animationDelay: '1s' }}>
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-cold rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Zap className="h-6 w-6 text-primary" />
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <TrendingUp className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle>Configuración Rápida</CardTitle>
-                <CardDescription>
-                  Implementación inmediata sin complicaciones técnicas ni capacitación extensa.
+                <CardTitle className="text-xl mb-3">Análisis Predictivo</CardTitle>
+                <CardDescription className="text-base">
+                  Algoritmos inteligentes que predicen tendencias de consumo y 
+                  optimizan automáticamente los niveles de stock.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -172,43 +254,94 @@ export default function Landing() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-gradient-cold">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-6">
-                Beneficios que transformarán tu negocio
+      <section className="py-32 bg-gradient-cold relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="animate-slide-in-left">
+              <Badge variant="outline" className="mb-6">
+                <Zap className="h-4 w-4 mr-2" />
+                Resultados Comprobados
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
+                Transforma tu operación con{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  tecnología inteligente
+                </span>
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {[
-                  "Reducción del desperdicio por productos vencidos",
-                  "Mayor eficiencia en la gestión de stock",
-                  "Alertas proactivas de caducidad",
-                  "Reportes detallados y análisis de tendencias",
-                  "Control de acceso por roles de usuario",
-                  "Interfaz intuitiva y fácil de usar"
+                  { 
+                    icon: TrendingUp, 
+                    title: "Reducción del desperdicio", 
+                    desc: "Hasta 80% menos pérdidas por productos vencidos" 
+                  },
+                  { 
+                    icon: BarChart3, 
+                    title: "Eficiencia operativa", 
+                    desc: "Automatización que ahorra hasta 15 horas semanales" 
+                  },
+                  { 
+                    icon: Bell, 
+                    title: "Alertas predictivas", 
+                    desc: "Anticipación de vencimientos con 7 días de antelación" 
+                  },
+                  { 
+                    icon: Shield, 
+                    title: "Control total", 
+                    desc: "Trazabilidad completa de cada producto en tiempo real" 
+                  }
                 ].map((benefit, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span className="text-muted-foreground">{benefit}</span>
+                  <div key={index} className="flex items-start space-x-4 group">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-cold">
+                      <benefit.icon className="h-6 w-6 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-1">{benefit.title}</h3>
+                      <p className="text-muted-foreground">{benefit.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-card p-8 rounded-lg shadow-frost">
-              <h3 className="text-xl font-semibold mb-6 text-center">
-                ¿Listo para comenzar?
-              </h3>
-              <div className="space-y-4">
-                <Link to="/register" className="block">
-                  <Button className="w-full bg-gradient-primary shadow-cold hover:shadow-frost">
-                    Crear Cuenta Gratis
-                  </Button>
-                </Link>
-                <p className="text-sm text-muted-foreground text-center">
-                  Sin compromisos • Configuración en minutos
-                </p>
-              </div>
+            <div className="animate-slide-in-right">
+              <Card className="glass-effect shadow-frost hover-lift p-10 border-primary/20">
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow">
+                    <Snowflake className="h-10 w-10 text-primary-foreground" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">
+                    Comienza tu transformación digital
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Únete a las empresas que ya optimizan su gestión de inventarios
+                  </p>
+                </div>
+                <div className="space-y-4">
+                  <Link to="/register" className="block">
+                    <Button className="w-full bg-gradient-primary shadow-cold hover:shadow-glow hover:scale-105 transition-all duration-300 py-6 text-lg group">
+                      <span className="flex items-center justify-center">
+                        Crear Cuenta Gratis
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                      </span>
+                    </Button>
+                  </Link>
+                  <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground pt-4">
+                    <div className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-primary mr-2" />
+                      Sin tarjeta
+                    </div>
+                    <div className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-primary mr-2" />
+                      Setup en 5 min
+                    </div>
+                    <div className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-primary mr-2" />
+                      Soporte 24/7
+                    </div>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         </div>
@@ -405,17 +538,29 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-card py-12">
+      <footer className="border-t glass-effect py-16">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <Snowflake className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <div className="flex items-center justify-center space-x-2 mb-6 group">
+              <Snowflake className="h-8 w-8 text-primary transition-transform group-hover:rotate-180 duration-700" />
+              <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 Cold Stock
               </span>
             </div>
-            <p className="text-muted-foreground">
-              © 2025 Cold Stock. Gestión inteligente de inventarios con control de caducidad.
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+              Gestión inteligente de inventarios con control de caducidad. 
+              Tecnología de punta para optimizar tu operación.
+            </p>
+            <div className="flex justify-center space-x-6 mb-8">
+              <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors">
+                Iniciar Sesión
+              </Link>
+              <Link to="/register" className="text-muted-foreground hover:text-primary transition-colors">
+                Registrarse
+              </Link>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              © 2025 Cold Stock. Todos los derechos reservados.
             </p>
           </div>
         </div>
