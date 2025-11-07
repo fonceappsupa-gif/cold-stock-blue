@@ -17,236 +17,255 @@ import {
   Lock,
   Sparkles
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
 import { useEffect, useState } from "react";
 
 export default function Landing() {
-  const [snowflakes, setSnowflakes] = useState([]);
+  const [particles, setParticles] = useState<Array<{ id: number; left: string; delay: string; duration: string }>>([]);
 
   useEffect(() => {
-    // Generate snowflakes
-    const newSnowflakes = Array.from({ length: 50 }, (_, i) => ({
+    // Generate random particles for the hero section
+    const newParticles = Array.from({ length: 30 }, (_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
-      animationDuration: `${Math.random() * 3 + 2}s`,
-      animationDelay: `${Math.random() * 5}s`,
-      size: Math.random() * 10 + 5,
-      opacity: Math.random() * 0.6 + 0.3
+      delay: `${Math.random() * 10}s`,
+      duration: `${15 + Math.random() * 20}s`
     }));
-    setSnowflakes(newSnowflakes);
+    setParticles(newParticles);
   }, []);
 
   return (
-    <div className="min-h-screen overflow-hidden bg-slate-950">
-      {/* Snowfall Effect */}
-      <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-        {snowflakes.map((flake) => (
-          <div
-            key={flake.id}
-            className="absolute animate-fall"
-            style={{
-              left: flake.left,
-              top: '-20px',
-              width: `${flake.size}px`,
-              height: `${flake.size}px`,
-              animationDuration: flake.animationDuration,
-              animationDelay: flake.animationDelay,
-              opacity: flake.opacity
-            }}
-          >
-            <Snowflake className="text-cyan-300 w-full h-full" />
-          </div>
-        ))}
-      </div>
-
-      <style>{`
-        @keyframes fall {
-          0% {
-            transform: translateY(-20px) rotate(0deg);
-          }
-          100% {
-            transform: translateY(100vh) rotate(360deg);
-          }
-        }
-        .animate-fall {
-          animation: fall linear infinite;
-        }
-        .glass-card {
-          background: rgba(15, 23, 42, 0.7);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-        .neon-text {
-          text-shadow: 0 0 10px rgba(56, 189, 248, 0.5),
-                       0 0 20px rgba(56, 189, 248, 0.3),
-                       0 0 30px rgba(56, 189, 248, 0.2);
-        }
-        .glow-effect {
-          box-shadow: 0 0 20px rgba(56, 189, 248, 0.3),
-                      0 0 40px rgba(56, 189, 248, 0.1);
-        }
-      `}</style>
-
+    <div className="min-h-screen overflow-hidden">
       {/* Header */}
-      <header className="glass-card sticky top-0 z-40 border-b border-cyan-500/20">
+      <header className="border-b glass-effect sticky top-0 z-50 animate-fade-in">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="bg-gradient-to-br from-cyan-400 to-blue-600 p-2 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                <Snowflake className="h-6 w-6 text-white animate-spin" style={{ animationDuration: '3s' }} />
-              </div>
-              <span className="text-2xl font-bold text-white neon-text">
+            <div className="flex items-center space-x-2 group">
+              <Snowflake className="h-8 w-8 text-primary transition-transform group-hover:rotate-180 duration-700" />
+              <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 Cold Stock
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="text-cyan-100 hover:text-white hover:bg-cyan-500/20 transition-all">
-                Iniciar Sesión
-              </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105">
-                Comenzar Gratis
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <Link to="/login">
+                <Button variant="ghost" className="relative overflow-hidden group">
+                  <span className="relative z-10">Iniciar Sesión</span>
+                  <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity" />
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button className="bg-gradient-primary shadow-cold hover:shadow-glow hover:scale-105 transition-all duration-300 relative overflow-hidden group">
+                  <span className="relative z-10 flex items-center">
+                    Comenzar Gratis
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 shimmer" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Animated background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950"></div>
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-arctic">
+        {/* Animated grid background */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         
-        {/* Animated orbs */}
-        <div className="absolute top-20 left-20 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        {/* Animated particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {particles.map((particle) => (
+            <div
+              key={particle.id}
+              className="particle"
+              style={{
+                left: particle.left,
+                animationDelay: particle.delay,
+                animationDuration: particle.duration,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-arctic-blue/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
         <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="text-center max-w-5xl mx-auto">
-            <Badge className="mb-8 bg-cyan-500/20 text-cyan-100 border-cyan-500/50 px-6 py-2 text-base hover:bg-cyan-500/30 transition-all">
+            <Badge variant="secondary" className="mb-8 animate-pulse-glow glass-effect px-6 py-2 text-base">
               <Sparkles className="h-5 w-5 mr-2" />
               Tecnología de Vanguardia en Gestión de Inventarios
             </Badge>
             
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 animate-fade-in">
-              <span className="block mb-2 text-white neon-text">Cold Stock</span>
-              <span className="block bg-gradient-to-r from-cyan-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent text-4xl md:text-5xl lg:text-6xl">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 animate-slide-up">
+              <span className="block mb-2">Cold Stock</span>
+              <span className="block bg-gradient-primary bg-clip-text text-transparent text-4xl md:text-5xl lg:text-6xl">
                 Gestión Inteligente de Cuartos Fríos
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-slate-300 mb-12 animate-fade-in max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-12 animate-slide-up max-w-3xl mx-auto leading-relaxed">
               Revoluciona tu gestión de inventarios con tecnología de punta. 
               Alertas automáticas, control en tiempo real y análisis predictivo para optimizar tu operación.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold px-8 py-6 text-lg shadow-xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 glow-effect">
-                <Package className="mr-2 h-6 w-6" />
-                Empezar Ahora
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="glass-card text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20 px-8 py-6 text-lg group">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up mb-16">
+              <Link to="/register">
+                <Button size="lg" className="bg-gradient-primary shadow-frost hover:shadow-glow hover:scale-105 transition-all duration-300 px-8 py-6 text-lg group relative overflow-hidden">
+                  <span className="relative z-10 flex items-center">
+                    <Package className="mr-2 h-6 w-6" />
+                    Empezar Ahora
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 shimmer" />
+                </Button>
+              </Link>
+              <Button size="lg" variant="outline" className="glass-effect border-primary/30 hover:bg-primary/10 px-8 py-6 text-lg group">
                 <BarChart3 className="mr-2 h-6 w-6 group-hover:scale-110 transition-transform" />
                 Ver Demo
               </Button>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto">
-              {[
-                { value: "99.9%", label: "Disponibilidad" },
-                { value: "-80%", label: "Desperdicio" },
-                { value: "24/7", label: "Monitoreo" }
-              ].map((stat, i) => (
-                <div key={i} className="glass-card p-6 rounded-xl hover:scale-105 transition-all duration-300 glow-effect">
-                  <div className="text-3xl font-bold text-cyan-400 mb-2 neon-text">{stat.value}</div>
-                  <div className="text-sm text-slate-300">{stat.label}</div>
-                </div>
-              ))}
+            <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto animate-fade-in">
+              <div className="glass-effect p-6 rounded-xl hover-lift">
+                <div className="text-3xl font-bold text-primary mb-2">99.9%</div>
+                <div className="text-sm text-muted-foreground">Disponibilidad</div>
+              </div>
+              <div className="glass-effect p-6 rounded-xl hover-lift" style={{ animationDelay: '0.2s' }}>
+                <div className="text-3xl font-bold text-primary mb-2">-80%</div>
+                <div className="text-sm text-muted-foreground">Desperdicio</div>
+              </div>
+              <div className="glass-effect p-6 rounded-xl hover-lift" style={{ animationDelay: '0.4s' }}>
+                <div className="text-3xl font-bold text-primary mb-2">24/7</div>
+                <div className="text-sm text-muted-foreground">Monitoreo</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-32 relative bg-slate-950">
+      <section className="py-32 bg-background relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
-            <Badge variant="outline" className="mb-4 bg-cyan-500/10 text-cyan-300 border-cyan-500/50">
+          <div className="text-center mb-20 animate-fade-in">
+            <Badge variant="outline" className="mb-4">
               <Sparkles className="h-4 w-4 mr-2" />
               Características Principales
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white neon-text">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Tecnología que impulsa tu negocio
             </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Herramientas profesionales diseñadas para maximizar eficiencia, 
               reducir pérdidas y mantener control absoluto de tu inventario.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Clock,
-                title: "Control de Caducidad",
-                desc: "Sistema inteligente de alertas que monitorea fechas de vencimiento en tiempo real, evitando pérdidas y optimizando la rotación de productos."
-              },
-              {
-                icon: BarChart3,
-                title: "Análisis en Tiempo Real",
-                desc: "Dashboards interactivos con métricas clave, gráficos dinámicos y reportes automatizados para tomar decisiones informadas."
-              },
-              {
-                icon: Bell,
-                title: "Alertas Inteligentes",
-                desc: "Notificaciones automáticas personalizables para niveles de stock críticos, próximos vencimientos y eventos importantes."
-              },
-              {
-                icon: Users,
-                title: "Gestión de Equipos",
-                desc: "Sistema de roles avanzado con permisos granulares para administradores, operarios y diferentes niveles de acceso."
-              },
-              {
-                icon: Lock,
-                title: "Seguridad Total",
-                desc: "Encriptación de datos, autenticación multifactor y backup automático para proteger tu información empresarial crítica."
-              },
-              {
-                icon: TrendingUp,
-                title: "Análisis Predictivo",
-                desc: "Algoritmos inteligentes que predicen tendencias de consumo y optimizan automáticamente los niveles de stock."
-              }
-            ].map((feature, index) => (
-              <Card key={index} className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 hover:scale-105 group">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg shadow-cyan-500/50">
-                    <feature.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <CardTitle className="text-xl mb-3 text-white">{feature.title}</CardTitle>
-                  <CardDescription className="text-base text-slate-300">
-                    {feature.desc}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Clock className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl mb-3">Control de Caducidad</CardTitle>
+                <CardDescription className="text-base">
+                  Sistema inteligente de alertas que monitorea fechas de vencimiento en tiempo real, 
+                  evitando pérdidas y optimizando la rotación de productos.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <BarChart3 className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl mb-3">Análisis en Tiempo Real</CardTitle>
+                <CardDescription className="text-base">
+                  Dashboards interactivos con métricas clave, gráficos dinámicos y 
+                  reportes automatizados para tomar decisiones informadas.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Bell className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl mb-3">Alertas Inteligentes</CardTitle>
+                <CardDescription className="text-base">
+                  Notificaciones automáticas personalizables para niveles de stock críticos, 
+                  próximos vencimientos y eventos importantes.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Users className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl mb-3">Gestión de Equipos</CardTitle>
+                <CardDescription className="text-base">
+                  Sistema de roles avanzado con permisos granulares para administradores, 
+                  operarios y diferentes niveles de acceso.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <Lock className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl mb-3">Seguridad Total</CardTitle>
+                <CardDescription className="text-base">
+                  Encriptación de datos, autenticación multifactor y backup automático 
+                  para proteger tu información empresarial crítica.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="hover-lift hover-glow border-primary/10 group relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-16 h-16 bg-gradient-cold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-cold">
+                  <TrendingUp className="h-8 w-8 text-primary" />
+                </div>
+                <CardTitle className="text-xl mb-3">Análisis Predictivo</CardTitle>
+                <CardDescription className="text-base">
+                  Algoritmos inteligentes que predicen tendencias de consumo y 
+                  optimizan automáticamente los niveles de stock.
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="py-32 relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950">
+      <section className="py-32 bg-gradient-cold relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge variant="outline" className="mb-6 bg-cyan-500/10 text-cyan-300 border-cyan-500/50">
+            <div className="animate-slide-in-left">
+              <Badge variant="outline" className="mb-6">
                 <Zap className="h-4 w-4 mr-2" />
                 Resultados Comprobados
               </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white">
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
                 Transforma tu operación con{" "}
-                <span className="bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent neon-text">
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
                   tecnología inteligente
                 </span>
               </h2>
@@ -274,46 +293,50 @@ export default function Landing() {
                   }
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-start space-x-4 group">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/50">
-                      <benefit.icon className="h-6 w-6 text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-cold">
+                      <benefit.icon className="h-6 w-6 text-primary-foreground" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 text-white">{benefit.title}</h3>
-                      <p className="text-slate-300">{benefit.desc}</p>
+                      <h3 className="font-semibold text-lg mb-1">{benefit.title}</h3>
+                      <p className="text-muted-foreground">{benefit.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div>
-              <Card className="glass-card shadow-2xl shadow-cyan-500/20 p-10 border-cyan-500/30 hover:scale-105 transition-transform duration-300">
+            <div className="animate-slide-in-right">
+              <Card className="glass-effect shadow-frost hover-lift p-10 border-primary/20">
                 <div className="text-center mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-cyan-500/50">
-                    <Snowflake className="h-10 w-10 text-white" />
+                  <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow">
+                    <Snowflake className="h-10 w-10 text-primary-foreground" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-3 text-white neon-text">
+                  <h3 className="text-2xl font-bold mb-3">
                     Comienza tu transformación digital
                   </h3>
-                  <p className="text-slate-300">
+                  <p className="text-muted-foreground">
                     Únete a las empresas que ya optimizan su gestión de inventarios
                   </p>
                 </div>
                 <div className="space-y-4">
-                  <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-6 text-lg shadow-xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105">
-                    Crear Cuenta Gratis
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <div className="flex items-center justify-center space-x-6 text-sm text-slate-300 pt-4">
+                  <Link to="/register" className="block">
+                    <Button className="w-full bg-gradient-primary shadow-cold hover:shadow-glow hover:scale-105 transition-all duration-300 py-6 text-lg group">
+                      <span className="flex items-center justify-center">
+                        Crear Cuenta Gratis
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                      </span>
+                    </Button>
+                  </Link>
+                  <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground pt-4">
                     <div className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-cyan-400 mr-2" />
+                      <CheckCircle className="h-4 w-4 text-primary mr-2" />
                       Sin tarjeta
                     </div>
                     <div className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-cyan-400 mr-2" />
+                      <CheckCircle className="h-4 w-4 text-primary mr-2" />
                       Setup en 5 min
                     </div>
                     <div className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-cyan-400 mr-2" />
+                      <CheckCircle className="h-4 w-4 text-primary mr-2" />
                       Soporte 24/7
                     </div>
                   </div>
@@ -325,141 +348,151 @@ export default function Landing() {
       </section>
 
       {/* Business Model Canvas Section */}
-      <section className="py-20 bg-slate-950">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-white neon-text">Modelo Canvas</h2>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold mb-4">Modelo Canvas</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Nuestro modelo de negocio diseñado para entregar valor a nuestros clientes
             </p>
           </div>
 
+
+
           <div className="grid lg:grid-cols-3 gap-6">
-            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+            {/* Fila 1: Socios, Actividades y Propuesta de Valor */}
+            <Card className="hover:shadow-cold transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Socios Clave</CardTitle>
+                <CardTitle className="text-lg">Socios Clave</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Proveedores de equipos de refrigeración</li>
-                  <li>• Proveedores tecnológicos (AWS, Azure)</li>
-                  <li>• Cámara de Comercio de Bucaramanga</li>
-                  <li>• SENA y entidades de apoyo al emprendimiento</li>
-                  <li>• Empresas aliadas del sector alimentos</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Proveedores de equipos de refrigeración: aliados para ofrecer ColdStock como complemento a sus servicios</li>
+                  <li>• Proveedores tecnológicos (AWS, Azure): garantizan la estabilidad, seguridad y escalabilidad del sistema</li>
+                  <li>• Cámara de Comercio de Bucaramanga: acompañamiento en formalización empresarial</li>
+                  <li>• SENA y entidades de apoyo al emprendimiento: asesoría, formación y validación del modelo de negocio</li>
+                  <li>• Empresas aliadas del sector alimentos y logística: primeras en implementar pilotos del sistema</li>
+                  <li>• Desarrolladores externos para integración con sensores IoT y nuevas funcionalidades</li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+            <Card className="hover:shadow-cold transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Actividades Clave</CardTitle>
+                <CardTitle className="text-lg">Actividades Clave</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Desarrollo y mantenimiento del software</li>
-                  <li>• Monitoreo en la nube y soporte técnico</li>
-                  <li>• Capacitación virtual para clientes</li>
-                  <li>• Estrategias de marketing digital</li>
-                  <li>• Alianzas comerciales estratégicas</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Desarrollo, actualización y mantenimiento del software.</li>
+                  <li>• Monitoreo en la nube y soporte técnico continuo</li>
+                  <li>• Capacitación virtual para clientes nuevos</li>
+                  <li>• Estrategias de marketing digital y demostraciones personalizadas</li>
+                  <li>• Alianzas comerciales con proveedores de equipos de refrigeración</li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 lg:row-span-2 bg-gradient-to-br from-cyan-950/50 to-blue-950/50">
+            <Card className="hover:shadow-cold transition-all duration-300 lg:row-span-2 bg-gradient-cold">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Propuesta de Valor</CardTitle>
+                <CardTitle className="text-lg">Propuesta de Valor</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Solución 100% en la nube accesible desde cualquier dispositivo</li>
-                  <li>• Alertas inteligentes sobre vencimientos y stock</li>
-                  <li>• Reportes automatizados que ahorran tiempo</li>
-                  <li>• Interfaz intuitiva y fácil de usar</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Solución 100 % en la nube, accesible desde cualquier dispositivo</li>
+                  <li>• Alertas inteligentes sobre fechas de vencimiento y niveles de stock</li>
+                  <li>• Reportes automatizados que ahorran tiempo y evitan errores humanos</li>
+                  <li>• Interfaz intuitiva, creada para que cualquier empleado pueda usarla sin conocimientos técnicos</li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+            {/* Fila 2: Recursos y continuación de Propuesta de Valor */}
+            <Card className="hover:shadow-cold transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Recursos Clave</CardTitle>
+                <CardTitle className="text-lg">Recursos Clave</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Equipo de desarrollo Full Stack</li>
-                  <li>• Infraestructura en la nube</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Equipo humano: desarrolladores Full Stack, soporte técnico, asesor comercial</li>
+                  <li>• Infraestructura en la nube (AWS o Azure)</li>
                   <li>• Plataforma web y app ColdStock</li>
-                  <li>• Licencias y registro de marca</li>
+                  <li>• Licencias, registro de marca y dominio web</li>
+                  <li>• Material promocional y redes sociales</li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+            <Card className="hover:shadow-cold transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Relaciones con Clientes</CardTitle>
+                <CardTitle className="text-lg">Relaciones con Clientes</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Atención personalizada y soporte técnico</li>
-                  <li>• Capacitación inicial incluida</li>
-                  <li>• Canal directo por email y WhatsApp</li>
-                  <li>• Descuentos por referidos</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Atención personalizada con soporte técnico remoto y chat en línea</li>
+                  <li>• Capacitación inicial incluida en la suscripción</li>
+                  <li>• Canal de comunicación directo por email y WhatsApp</li>
+                  <li>• Estrategia de fidelización: descuentos por referidos y upgrades de plan</li>
+                  <li>• Reportes automáticos que fortalecen la confianza del cliente</li>
                 </ul>
               </CardContent>
             </Card>
 
+            {/* Fila 3: Canales y Segmentos */}
             <div className="lg:col-span-2">
               <div className="grid sm:grid-cols-2 gap-6">
-                <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+                <Card className="hover:shadow-cold transition-all duration-300">
                   <CardHeader>
-                    <CardTitle className="text-lg text-cyan-400">Canales</CardTitle>
+                    <CardTitle className="text-lg">Canales</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2 text-sm text-slate-300">
-                      <li>• Página web oficial</li>
-                      <li>• Redes sociales</li>
-                      <li>• Contacto directo con empresas</li>
-                      <li>• Alianzas con distribuidores</li>
-                      <li>• Ferias y eventos del sector</li>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Página web oficial con registro de prueba gratuita</li>
+                      <li>• Redes sociales (Instagram, Facebook, LinkedIn)</li>
+                      <li>• Contacto directo con empresas y visitas comerciales</li>
+                      <li>• Alianzas con distribuidores y cámaras de comercio</li>
+                      <li>• Ferias locales y eventos del sector de alimentos y tecnología</li>
                     </ul>
                   </CardContent>
                 </Card>
 
-                <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+                <Card className="hover:shadow-cold transition-all duration-300">
                   <CardHeader>
-                    <CardTitle className="text-lg text-cyan-400">Segmentos de Clientes</CardTitle>
+                    <CardTitle className="text-lg">Segmentos de Clientes</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2 text-sm text-slate-300">
-                      <li>• Restaurantes y hoteles</li>
-                      <li>• Supermercados y distribuidores</li>
-                      <li>• Empresas farmacéuticas</li>
-                      <li>• PYMES de Bucaramanga</li>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Restaurantes, panaderías y hoteles que almacenan alimentos perecederos</li>
+                      <li>• Supermercados, frigoríficos y distribuidores de alimentos que manejan grandes volúmenes</li>
+                      <li>• Empresas del sector farmacéutico que requieren trazabilidad de medicamentos y vacunas</li>
+                      <li>• PYMES del área metropolitana de Bucaramanga con proyección nacional</li>
                     </ul>
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+            <Card className="hover:shadow-cold transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Estructura de Costos</CardTitle>
+                <CardTitle className="text-lg">Estructura de Costos</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Desarrollo y alojamiento</li>
-                  <li>• Nómina del equipo</li>
-                  <li>• Marketing y publicidad</li>
-                  <li>• Licencias y gastos legales</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Desarrollo, mantenimiento y alojamiento en la nube</li>
+                  <li>• Nómina del equipo técnico y comercial</li>
+                  <li>• Marketing digital y publicidad</li>
+                  <li>• Licencias de software, registro de marca y gastos legales</li>
+                  <li>• Equipos y suscripciones tecnológicas</li>
                 </ul>
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-2 glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
+            {/* Fila 4: Fuentes de Ingresos */}
+            <Card className="lg:col-span-2 hover:shadow-cold transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-cyan-400">Fuentes de Ingresos</CardTitle>
+                <CardTitle className="text-lg">Fuentes de Ingresos</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-slate-300">
+                <ul className="space-y-2 text-sm text-muted-foreground">
                   <li>• Suscripciones mensuales/anuales por usuario</li>
                   <li>• Planes empresariales personalizados</li>
                   <li>• Servicios de implementación y capacitación</li>
@@ -467,40 +500,72 @@ export default function Landing() {
                 </ul>
               </CardContent>
             </Card>
+                                {/* Canvas Image Preview */}
+          <div className="mb-12 flex justify-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="relative cursor-pointer group max-w-md">
+                  <Card className="overflow-hidden hover:shadow-frost transition-all duration-300">
+                    <img 
+                      src={canvasImage} 
+                      alt="Business Model Canvas" 
+                      className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground rounded-full p-3">
+                        <Maximize2 className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </Card>
+                  <p className="text-sm text-muted-foreground text-center mt-3">
+                    Haz clic para ampliar
+                  </p>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl w-full">
+                <img 
+                  src={canvasImage} 
+                  alt="Business Model Canvas - Vista ampliada" 
+                  className="w-full h-auto"
+                />
+              </DialogContent>
+            </Dialog>
           </div>
+          </div>
+
+
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="glass-card border-t border-cyan-500/20 py-16">
+      <footer className="border-t glass-effect py-16">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-6 group cursor-pointer">
-              <div className="bg-gradient-to-br from-cyan-400 to-blue-600 p-2 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                <Snowflake className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white neon-text">
+            <div className="flex items-center justify-center space-x-2 mb-6 group">
+              <Snowflake className="h-8 w-8 text-primary transition-transform group-hover:rotate-180 duration-700" />
+              <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 Cold Stock
               </span>
             </div>
-            <p className="text-slate-300 mb-8 max-w-md mx-auto">
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Gestión inteligente de inventarios con control de caducidad. 
               Tecnología de punta para optimizar tu operación.
             </p>
             <div className="flex justify-center space-x-6 mb-8">
-              <a href="#" className="text-slate-300 hover:text-cyan-400 transition-colors">
+              <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors">
                 Iniciar Sesión
-              </a>
-              <a href="#" className="text-slate-300 hover:text-cyan-400 transition-colors">
+              </Link>
+              <Link to="/register" className="text-muted-foreground hover:text-primary transition-colors">
                 Registrarse
-              </a>
+              </Link>
             </div>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-muted-foreground">
               © 2025 Cold Stock. Todos los derechos reservados.
             </p>
           </div>
         </div>
       </footer>
     </div>
+    
   );
 }
