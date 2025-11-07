@@ -196,23 +196,37 @@ export default function FullAdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-950">
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="glass-card sticky top-0 z-50 border-b border-cyan-500/20">
+        <style>{`
+          .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+          }
+        `}</style>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Snowflake className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              <div className="bg-gradient-to-br from-cyan-400 to-blue-600 p-2 rounded-lg">
+                <Snowflake className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold text-white">
                 {organizacionNombre || "Cold Stock"}
               </span>
-              <Badge variant="secondary">Admin</Badge>
+              <Badge className="bg-cyan-500/20 text-cyan-100 border-cyan-500/50">Admin</Badge>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-slate-300">
                 {user?.email}
               </span>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleLogout}
+                className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20"
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Salir
               </Button>
@@ -225,74 +239,74 @@ export default function FullAdminDashboard() {
         <div className="space-y-6">
           {/* Header */}
           <div>
-            <h1 className="text-3xl font-bold">Dashboard Administrativo</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-3xl font-bold text-white">Dashboard Administrativo</h1>
+            <p className="text-slate-300">
               Gestiona productos, operarios y movimientos de inventario
             </p>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <Card className="hover:shadow-cold transition-all duration-300">
+            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 hover:scale-105">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Productos</CardTitle>
-                <Package className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm font-medium text-white">Total Productos</CardTitle>
+                <Package className="h-4 w-4 text-cyan-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.totalProducts}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold text-white">{stats.totalProducts}</div>
+                <p className="text-xs text-slate-300">
                   Productos registrados
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300">
+            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 hover:scale-105">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Operarios</CardTitle>
-                <Users className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm font-medium text-white">Operarios</CardTitle>
+                <Users className="h-4 w-4 text-cyan-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.totalOperators}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold text-white">{stats.totalOperators}</div>
+                <p className="text-xs text-slate-300">
                   Operarios activos
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300">
+            <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 hover:scale-105">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Stock Total</CardTitle>
-                <BarChart3 className="h-4 w-4 text-primary" />
+                <CardTitle className="text-sm font-medium text-white">Stock Total</CardTitle>
+                <BarChart3 className="h-4 w-4 text-cyan-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.totalStock}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold text-white">{stats.totalStock}</div>
+                <p className="text-xs text-slate-300">
                   Unidades en inventario
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 border-destructive/20">
+            <Card className="glass-card border-orange-500/40 hover:border-orange-500/60 transition-all duration-300 hover:scale-105">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Vencen en 7 días</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-destructive" />
+                <CardTitle className="text-sm font-medium text-white">Vencen en 7 días</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-orange-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-destructive">{stats.expiringSoon7}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold text-orange-400">{stats.expiringSoon7}</div>
+                <p className="text-xs text-slate-300">
                   Lotes próximos
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-cold transition-all duration-300 border-destructive/40">
+            <Card className="glass-card border-red-500/40 hover:border-red-500/60 transition-all duration-300 hover:scale-105">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Vencen en 3 días</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-destructive" />
+                <CardTitle className="text-sm font-medium text-white">Vencen en 3 días</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-red-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-destructive">{stats.expiringSoon3}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold text-red-400">{stats.expiringSoon3}</div>
+                <p className="text-xs text-slate-300">
                   Lotes críticos
                 </p>
               </CardContent>
@@ -301,13 +315,13 @@ export default function FullAdminDashboard() {
 
           {/* Lotes Próximos a Vencer */}
           {expiringLots.length > 0 && (
-            <Card className="border-destructive/20">
+            <Card className="glass-card border-orange-500/30">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <AlertTriangle className="h-5 w-5 text-orange-400" />
                   Lotes Próximos a Vencer
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-slate-300">
                   Productos que requieren atención urgente
                 </CardDescription>
               </CardHeader>
@@ -317,22 +331,22 @@ export default function FullAdminDashboard() {
                     <div 
                       key={lote.lote_id} 
                       className={`flex items-center justify-between p-3 rounded-lg border ${
-                        lote.dias_para_vencer <= 3 ? 'bg-destructive/10 border-destructive/30' : 'bg-muted/50'
+                        lote.dias_para_vencer <= 3 ? 'bg-red-500/10 border-red-500/30' : 'bg-orange-500/10 border-orange-500/30'
                       }`}
                     >
                       <div className="flex-1">
-                        <p className="font-medium">{lote.producto_nombre}</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-white">{lote.producto_nombre}</p>
+                        <p className="text-sm text-slate-300">
                           Lote: {lote.lote_id} • Cantidad: {lote.cantidad}
                         </p>
                       </div>
                       <div className="text-right">
-                        <Badge variant={lote.dias_para_vencer <= 3 ? "destructive" : "secondary"}>
+                        <Badge className={lote.dias_para_vencer <= 3 ? 'bg-red-500/20 text-red-300 border-red-500/50' : 'bg-orange-500/20 text-orange-300 border-orange-500/50'}>
                           {lote.dias_para_vencer === 0 ? 'Vence hoy' : 
                            lote.dias_para_vencer === 1 ? 'Vence mañana' : 
                            `${lote.dias_para_vencer} días`}
                         </Badge>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-xs text-slate-400 mt-1">
                           {new Date(lote.fecha_vencimiento).toLocaleDateString('es-ES')}
                         </p>
                       </div>
