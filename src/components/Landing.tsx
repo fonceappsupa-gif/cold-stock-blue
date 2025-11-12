@@ -18,6 +18,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import ScrollToTop from "./ScrollToTop";
 import { useEffect, useState } from "react";
 import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
 
@@ -554,6 +555,8 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+
+      <ScrollToTop />
     </div>
   );
 }

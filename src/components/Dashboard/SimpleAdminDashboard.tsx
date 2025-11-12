@@ -124,8 +124,8 @@ export default function SimpleAdminDashboard() {
                 <Package className="h-4 w-4 text-cyan-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.totalProducts}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold text-white">{stats.totalProducts}</div>
+                <p className="text-xs text-cyan-200">
                   Productos registrados
                 </p>
               </CardContent>
@@ -137,8 +137,8 @@ export default function SimpleAdminDashboard() {
                 <Users className="h-4 w-4 text-cyan-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-cyan-100">{stats.totalOperators}</div>
-                <p className="text-xs text-slate-300">
+                <div className="text-2xl font-bold text-white">{stats.totalOperators}</div>
+                <p className="text-xs text-cyan-200">
                   Operarios activos
                 </p>
               </CardContent>
@@ -150,8 +150,8 @@ export default function SimpleAdminDashboard() {
                 <BarChart3 className="h-4 w-4 text-cyan-400" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-cyan-100">{stats.totalStock}</div>
-                <p className="text-xs text-slate-300">
+                <div className="text-2xl font-bold text-white">{stats.totalStock}</div>
+                <p className="text-xs text-cyan-200">
                   Unidades en inventario
                 </p>
               </CardContent>
@@ -164,7 +164,7 @@ export default function SimpleAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-red-400">{stats.expiringSoon}</div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-red-200">
                   En los próximos 7 días
                 </p>
               </CardContent>
@@ -176,7 +176,7 @@ export default function SimpleAdminDashboard() {
             <Card className="bg-slate-900/70 backdrop-filter backdrop-blur-xl border-cyan-500/20">
               <CardHeader>
                 <CardTitle className="text-white">Productos Registrados</CardTitle>
-                <CardDescription className="text-slate-300">
+                <CardDescription className="text-cyan-200">
                   Lista de productos en tu organización
                 </CardDescription>
               </CardHeader>
@@ -185,21 +185,21 @@ export default function SimpleAdminDashboard() {
                   <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-cyan-500/10">
                     <div>
                       <p className="font-medium text-white">Leche Deslactosada</p>
-                      <p className="text-sm text-slate-300">Lácteos • Litros</p>
+                      <p className="text-sm text-cyan-200">Lácteos • Litros</p>
                     </div>
                     <Badge className="bg-cyan-500/20 text-cyan-100 border-cyan-500/50">Min: 20</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-cyan-500/10">
                     <div>
                       <p className="font-medium text-white">Yogurt Natural</p>
-                      <p className="text-sm text-slate-300">Lácteos • Unidad</p>
+                      <p className="text-sm text-cyan-200">Lácteos • Unidad</p>
                     </div>
                     <Badge className="bg-cyan-500/20 text-cyan-100 border-cyan-500/50">Min: 50</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-cyan-500/10">
                     <div>
                       <p className="font-medium text-white">Queso Fresco</p>
-                      <p className="text-sm text-slate-300">Lácteos • Kg</p>
+                      <p className="text-sm text-cyan-200">Lácteos • Kg</p>
                     </div>
                     <Badge className="bg-cyan-500/20 text-cyan-100 border-cyan-500/50">Min: 10</Badge>
                   </div>
@@ -210,7 +210,7 @@ export default function SimpleAdminDashboard() {
             <Card className="bg-slate-900/70 backdrop-filter backdrop-blur-xl border-cyan-500/20">
               <CardHeader>
                 <CardTitle className="text-white">Operarios Activos</CardTitle>
-                <CardDescription className="text-slate-300">
+                <CardDescription className="text-cyan-200">
                   Personal de tu organización
                 </CardDescription>
               </CardHeader>
@@ -219,21 +219,21 @@ export default function SimpleAdminDashboard() {
                   <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-cyan-500/10">
                     <div>
                       <p className="font-medium text-white">María González</p>
-                      <p className="text-sm text-slate-300">maria@empresa.com</p>
+                      <p className="text-sm text-cyan-200">maria@empresa.com</p>
                     </div>
                     <Badge className="bg-blue-500/20 text-blue-100 border-blue-500/50">Operario</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-cyan-500/10">
                     <div>
                       <p className="font-medium text-white">Carlos Ruiz</p>
-                      <p className="text-sm text-slate-300">carlos@empresa.com</p>
+                      <p className="text-sm text-cyan-200">carlos@empresa.com</p>
                     </div>
                     <Badge className="bg-blue-500/20 text-blue-100 border-blue-500/50">Operario</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-cyan-500/10">
                     <div>
                       <p className="font-medium text-white">Ana López</p>
-                      <p className="text-sm text-slate-300">ana@empresa.com</p>
+                      <p className="text-sm text-cyan-200">ana@empresa.com</p>
                     </div>
                     <Badge className="bg-blue-500/20 text-blue-100 border-blue-500/50">Operario</Badge>
                   </div>
@@ -245,38 +245,38 @@ export default function SimpleAdminDashboard() {
           {/* Feature Demo */}
           <Card className="bg-slate-900/70 backdrop-filter backdrop-blur-xl border-cyan-500/20">
             <CardHeader>
-              <CardTitle className="text-white">Sistema Cold Stock - Demo</CardTitle>
-              <CardDescription className="text-slate-300">
-                Esta es una demostración de las capacidades del sistema
-              </CardDescription>
+                <CardTitle className="text-white">Sistema Cold Stock - Demo</CardTitle>
+                <CardDescription className="text-cyan-200">
+                  Esta es una demostración de las capacidades del sistema
+                </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <p className="text-slate-300 mb-4">
-                  🔧 Sistema en desarrollo - Las funcionalidades completas estarán disponibles próximamente
-                </p>
+              <CardContent>
+                <div className="text-center py-8">
+                  <p className="text-cyan-200 mb-4">
+                    🔧 Sistema en desarrollo - Las funcionalidades completas estarán disponibles próximamente
+                  </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                  <div className="p-4 border border-cyan-500/20 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all">
-                    <Package className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
-                    <h3 className="font-semibold text-white">Gestión de Productos</h3>
-                    <p className="text-sm text-slate-300">
-                      Catálogo completo con categorías y unidades
-                    </p>
-                  </div>
-                  <div className="p-4 border border-cyan-500/20 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all">
-                    <Users className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
-                    <h3 className="font-semibold text-white">Control de Usuarios</h3>
-                    <p className="text-sm text-slate-300">
-                      Roles diferenciados y permisos granulares
-                    </p>
-                  </div>
-                  <div className="p-4 border border-cyan-500/20 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all">
-                    <BarChart3 className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
-                    <h3 className="font-semibold text-white">Reportes Avanzados</h3>
-                    <p className="text-sm text-slate-300">
-                      Analytics y estadísticas en tiempo real
-                    </p>
-                  </div>
+                    <div className="p-4 border border-cyan-500/20 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all">
+                      <Package className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
+                      <h3 className="font-semibold text-white">Gestión de Productos</h3>
+                      <p className="text-sm text-cyan-200">
+                        Catálogo completo con categorías y unidades
+                      </p>
+                    </div>
+                    <div className="p-4 border border-cyan-500/20 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all">
+                      <Users className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
+                      <h3 className="font-semibold text-white">Control de Usuarios</h3>
+                      <p className="text-sm text-cyan-200">
+                        Roles diferenciados y permisos granulares
+                      </p>
+                    </div>
+                    <div className="p-4 border border-cyan-500/20 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all">
+                      <BarChart3 className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
+                      <h3 className="font-semibold text-white">Reportes Avanzados</h3>
+                      <p className="text-sm text-cyan-200">
+                        Analytics y estadísticas en tiempo real
+                      </p>
+                    </div>
                 </div>
               </div>
             </CardContent>

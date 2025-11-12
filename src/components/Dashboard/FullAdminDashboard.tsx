@@ -20,7 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import ProductManager from "./ProductManager";
 import OperatorManager from "./OperatorManager";
 import MovementManager from "./MovementManager";
-import DataDashboard from "./DataDashboard";
+import DataDashboardEnhanced from "./DataDashboardEnhanced";
 
 export default function FullAdminDashboard() {
   const [user, setUser] = useState<any>(null);
@@ -34,6 +34,7 @@ export default function FullAdminDashboard() {
     totalStock: 0
   });
   const [expiringLots, setExpiringLots] = useState<any[]>([]);
+  const [visibleLotsCount, setVisibleLotsCount] = useState(5);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -254,7 +255,7 @@ export default function FullAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.totalProducts}</div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-cyan-200">
                   Productos registrados
                 </p>
               </CardContent>
@@ -267,7 +268,7 @@ export default function FullAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.totalOperators}</div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-cyan-200">
                   Operarios activos
                 </p>
               </CardContent>
@@ -280,7 +281,7 @@ export default function FullAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.totalStock}</div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-cyan-200">
                   Unidades en inventario
                 </p>
               </CardContent>
@@ -293,7 +294,7 @@ export default function FullAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-orange-400">{stats.expiringSoon7}</div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-orange-200">
                   Lotes próximos
                 </p>
               </CardContent>
@@ -306,7 +307,7 @@ export default function FullAdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-red-400">{stats.expiringSoon3}</div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-red-200">
                   Lotes críticos
                 </p>
               </CardContent>
@@ -321,13 +322,13 @@ export default function FullAdminDashboard() {
                   <AlertTriangle className="h-5 w-5 text-orange-400" />
                   Lotes Próximos a Vencer
                 </CardTitle>
-                <CardDescription className="text-slate-300">
+                <CardDescription className="text-cyan-200">
                   Productos que requieren atención urgente
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {expiringLots.map((lote) => (
+                  {expiringLots.slice(0, visibleLotsCount).map((lote) => (
                     <div 
                       key={lote.lote_id} 
                       className={`flex items-center justify-between p-3 rounded-lg border ${
@@ -336,7 +337,7 @@ export default function FullAdminDashboard() {
                     >
                       <div className="flex-1">
                         <p className="font-medium text-white">{lote.producto_nombre}</p>
-                        <p className="text-sm text-slate-300">
+                        <p className="text-sm text-cyan-200">
                           Lote: {lote.lote_id} • Cantidad: {lote.cantidad}
                         </p>
                       </div>
@@ -346,13 +347,36 @@ export default function FullAdminDashboard() {
                            lote.dias_para_vencer === 1 ? 'Vence mañana' : 
                            `${lote.dias_para_vencer} días`}
                         </Badge>
-                        <p className="text-xs text-slate-400 mt-1">
+                        <p className="text-xs text-cyan-300 mt-1">
                           {new Date(lote.fecha_vencimiento).toLocaleDateString('es-ES')}
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
+                {expiringLots.length > 5 && (
+                  <div className="mt-4 flex justify-center">
+                    {visibleLotsCount < expiringLots.length ? (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setVisibleLotsCount(prev => Math.min(prev + 5, expiringLots.length))}
+                        className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20"
+                      >
+                        Mostrar más
+                      </Button>
+                    ) : (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setVisibleLotsCount(5)}
+                        className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20"
+                      >
+                        Ocultar
+                      </Button>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
@@ -378,7 +402,7 @@ export default function FullAdminDashboard() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="data" className="mt-6">
-              <DataDashboard organizacionId={organizacionId} />
+              <DataDashboardEnhanced organizacionId={organizacionId} />
             </TabsContent>
             <TabsContent value="products" className="mt-6">
               <ProductManager organizacionId={organizacionId} />
