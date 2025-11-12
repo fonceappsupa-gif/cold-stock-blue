@@ -222,7 +222,7 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
           variant="outline" 
           size="sm"
           onClick={() => setIsEditModalOpen(true)}
-          className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20"
+          className="text-black border-cyan-500/50 hover:bg-cyan-500/20 hover:text-white"
         >
           <Edit className="h-4 w-4 mr-2" />
           Editar Organización
@@ -246,7 +246,7 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20",
+                      "w-full justify-start text-left font-normal text-black border-cyan-500/50 hover:bg-cyan-500/20 hover:text-white",
                       !startDate && "text-muted-foreground"
                     )}
                   >
@@ -273,7 +273,7 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20",
+                      "w-full justify-start text-left font-normal text-black border-cyan-500/50 hover:bg-cyan-500/20 hover:text-white",
                       !endDate && "text-muted-foreground"
                     )}
                   >
@@ -296,7 +296,7 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
             <div className="space-y-2">
               <label className="text-sm font-medium text-cyan-200">Agrupar por</label>
               <Select value={groupBy} onValueChange={(value: any) => setGroupBy(value)}>
-                <SelectTrigger className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20">
+                <SelectTrigger className="text-black border-cyan-500/50 hover:bg-cyan-500/20 hover:text-white">
                   <SelectValue placeholder="Seleccionar agrupación" />
                 </SelectTrigger>
                 <SelectContent>

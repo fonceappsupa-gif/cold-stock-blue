@@ -226,7 +226,7 @@ export default function FullAdminDashboard() {
                 variant="outline" 
                 size="sm" 
                 onClick={handleLogout}
-                className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20"
+                className="text-black border-cyan-500/50 hover:bg-cyan-500/20 hover:text-white"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Salir
@@ -361,7 +361,7 @@ export default function FullAdminDashboard() {
                         variant="outline" 
                         size="sm"
                         onClick={() => setVisibleLotsCount(prev => Math.min(prev + 5, expiringLots.length))}
-                        className="text-cyan-100 border-cyan-500/50 hover:bg-cyan-500/20"
+                        className="text-black border-cyan-500/50 hover:bg-cyan-500/20 hover:text-white"
                       >
                         Mostrar más
                       </Button>
