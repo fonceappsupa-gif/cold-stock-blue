@@ -354,37 +354,7 @@ export default function Landing() {
             </p>
           </div>
 
-          {/* Canvas Image Preview */}
-          <div className="mb-12 flex justify-center">
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="relative cursor-pointer group max-w-md">
-                  <Card className="glass-card overflow-hidden hover:shadow-cyan-500/50 transition-all duration-300 border-cyan-500/30">
-                    <img 
-                      src={canvasImage} 
-                      alt="Business Model Canvas" 
-                      className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full p-3 glow-effect">
-                        <Maximize2 className="h-6 w-6" />
-                      </div>
-                    </div>
-                  </Card>
-                  <p className="text-sm text-cyan-300 text-center mt-3">
-                    Haz clic para ampliar
-                  </p>
-                </div>
-              </DialogTrigger>
-              <DialogContent className="max-w-6xl w-full bg-slate-900 border-cyan-500/30">
-                <img 
-                  src={canvasImage} 
-                  alt="Business Model Canvas - Vista ampliada" 
-                  className="w-full h-auto"
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
+
 
           <div className="grid lg:grid-cols-3 gap-6">
             <Card className="glass-card border-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300">
@@ -519,7 +489,38 @@ export default function Landing() {
                 </ul>
               </CardContent>
             </Card>
+          {/* Canvas Image Preview */}
+          <div className="mb-12 flex justify-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="relative cursor-pointer group max-w-md">
+                  <Card className="glass-card overflow-hidden hover:shadow-cyan-500/50 transition-all duration-300 border-cyan-500/30">
+                    <img 
+                      src={canvasImage} 
+                      alt="Business Model Canvas" 
+                      className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full p-3 glow-effect">
+                        <Maximize2 className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </Card>
+                  <p className="text-sm text-cyan-300 text-center mt-3">
+                    Haz clic para ampliar
+                  </p>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-6xl w-full bg-slate-900 border-cyan-500/30">
+                <img 
+                  src={canvasImage} 
+                  alt="Business Model Canvas - Vista ampliada" 
+                  className="w-full h-auto"
+                />
+              </DialogContent>
+            </Dialog>
           </div>
+          </div>          
         </div>
       </section>
 
