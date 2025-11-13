@@ -21,7 +21,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ScrollToTop from "./ScrollToTop";
 import { useEffect, useState } from "react";
 import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
-import logoColdStock from "@/assets/LogoColdStock.png";
+import logoColdStock from "@/assets/LogoColdStock.jpg";
 import PricingSection from "./PricingSection";
 import ContactSection from "./ContactSection";
 
@@ -119,11 +119,12 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3 group cursor-pointer">
-              <img 
-                src={logoColdStock} 
-                alt="Cold Stock Logo" 
-                className="h-12 w-auto group-hover:scale-110 transition-transform duration-300"
-              />
+              <div className="bg-gradient-to-br from-cyan-400 to-blue-600 p-2 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                <Snowflake className="h-6 w-6 text-white animate-spin" style={{ animationDuration: '3s' }} />
+              </div>
+              <span className="text-2xl font-bold text-white neon-text">
+                Cold Stock
+              </span>
             </div>
             <div className="flex items-center space-x-4">
               <Button 
@@ -369,6 +370,11 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <PricingSection />
+
+      {/* Contact Section */}
+      <ContactSection />
       {/* Business Model Canvas Section */}
       <section className="py-20 bg-slate-950">
         <div className="container mx-auto px-4">
@@ -549,11 +555,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <PricingSection />
 
-      {/* Contact Section */}
-      <ContactSection />
 
       {/* Footer */}
       <footer className="glass-card border-t border-cyan-500/20 py-16">

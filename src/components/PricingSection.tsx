@@ -7,7 +7,7 @@ export default function PricingSection() {
   const plans = [
     {
       name: "Plan Básico",
-      price: "$49",
+      price: "$80.000",
       period: "/mes",
       description: "Perfecto para pequeños negocios que comienzan",
       features: [
@@ -23,7 +23,7 @@ export default function PricingSection() {
     },
     {
       name: "Plan Profesional",
-      price: "$99",
+      price: "$90.000",
       period: "/mes",
       description: "La mejor opción para negocios en crecimiento",
       features: [
