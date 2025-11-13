@@ -21,9 +21,12 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ScrollToTop from "./ScrollToTop";
 import { useEffect, useState } from "react";
 import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
+import PricingSection from "./PricingSection";
+import ContactSection from "./ContactSection";
 
 export default function Landing() {
   const [snowflakes, setSnowflakes] = useState([]);
+  const [showLogoModal, setShowLogoModal] = useState(true);
 
   useEffect(() => {
     // Generate snowflakes
@@ -40,6 +43,29 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-slate-950">
+      {/* Logo Modal - Opens on page load */}
+      <Dialog open={showLogoModal} onOpenChange={setShowLogoModal}>
+        <DialogContent className="max-w-md bg-slate-900/95 border-cyan-500/50">
+          <div className="flex flex-col items-center justify-center py-8">
+            <div className="bg-gradient-to-br from-cyan-400 to-blue-600 p-8 rounded-2xl mb-6 animate-pulse">
+              <Snowflake className="h-24 w-24 text-white" />
+            </div>
+            <h2 className="text-4xl font-bold text-white mb-2 neon-text text-center">
+              Cold Stock
+            </h2>
+            <p className="text-cyan-300 text-center mb-6">
+              Gestión inteligente de inventarios
+            </p>
+            <Button
+              onClick={() => setShowLogoModal(false)}
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+            >
+              Comenzar
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Snowfall Effect */}
       <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
         {snowflakes.map((flake) => (
@@ -524,6 +550,12 @@ export default function Landing() {
           </div>          
         </div>
       </section>
+
+      {/* Pricing Section */}
+      <PricingSection />
+
+      {/* Contact Section */}
+      <ContactSection />
 
       {/* Footer */}
       <footer className="glass-card border-t border-cyan-500/20 py-16">
