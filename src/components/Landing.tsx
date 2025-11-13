@@ -542,11 +542,11 @@ export default function Landing() {
                   </p>
                 </div>
               </DialogTrigger>
-              <DialogContent className="max-w-6xl w-full bg-slate-900 border-cyan-500/30">
+              <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] max-h-[95vh] bg-slate-900 border-cyan-500/30 p-0 flex items-center justify-center overflow-hidden">
                 <img 
                   src={canvasImage} 
                   alt="Business Model Canvas - Vista ampliada" 
-                  className="w-full h-auto"
+                  className="max-w-full max-h-full object-contain"
                 />
               </DialogContent>
             </Dialog>
