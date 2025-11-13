@@ -29,7 +29,7 @@ export default function ContactSection() {
   const { toast } = useToast();
 
   // En producción, el usuario debe cargar su propio QR de WhatsApp
-  const whatsappQR = "/placeholder.svg"; // Placeholder, el usuario debe reemplazar esto
+  const whatsappQR = "/wppqr.png"; // Placeholder, el usuario debe reemplazar esto
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -233,7 +233,11 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-cyan-400 mb-2">Email</h4>
-                    <p>contacto@coldstock.com</p>
+                    <p>Coldstock03@gmail.com</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-cyan-400 mb-2">Whatsapp</h4>
+                    <p>314-218-2069</p>
                   </div>
                   <div>
                     <h4 className="font-semibold text-cyan-400 mb-2">Ubicación</h4>
