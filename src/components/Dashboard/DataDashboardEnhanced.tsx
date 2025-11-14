@@ -47,7 +47,7 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
     if (selectedProductId && organizacionId) {
       fetchStockHistory();
     }
-  }, [selectedProductId, organizacionId, startDate, endDate]);
+  }, [selectedProductId, organizacionId, startDate, endDate, groupBy]);
 
   const fetchOrganizacion = async () => {
     try {
@@ -154,9 +154,10 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
         const stockData = (stock || []).find((s: any) => s.producto_id === prod.producto_id);
         return {
           nombre: prod.nombre.length > 15 ? prod.nombre.substring(0, 15) + '...' : prod.nombre,
+          nombreCompleto: prod.nombre,
           stock: stockData?.stock_actual || 0
         };
-      }).slice(0, 8);
+      });
 
       setProductosData(combined);
     } catch (error: any) {
@@ -202,18 +203,76 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
       const producto = allProducts.find(p => p.producto_id === selectedProductId);
       if (!producto) return;
 
+      // Group movements by the selected time interval
+      let intervals: Date[] = [];
+      
+      switch (groupBy) {
+        case 'day':
+          intervals = eachDayOfInterval({ start: startDate, end: endDate });
+          break;
+        case 'week':
+          intervals = eachWeekOfInterval({ start: startDate, end: endDate });
+          break;
+        case 'month':
+          intervals = eachMonthOfInterval({ start: startDate, end: endDate });
+          break;
+        case 'year':
+          intervals = Array.from(
+            { length: endDate.getFullYear() - startDate.getFullYear() + 1 },
+            (_, i) => new Date(startDate.getFullYear() + i, 0, 1)
+          );
+          break;
+      }
+
+      const historyData = intervals.map(interval => {
+        const intervalEnd = groupBy === 'day' ? interval :
+                           groupBy === 'week' ? endOfWeek(interval, { locale: es }) :
+                           groupBy === 'month' ? endOfMonth(interval) :
+                           endOfYear(interval);
+        
+        const movimientosInInterval = (movimientos || []).filter((mov: any) => {
+          const movDate = new Date(mov.fecha);
+          return movDate >= interval && movDate <= intervalEnd;
+        });
+
+        const stockChange = movimientosInInterval.reduce((acc: number, mov: any) => {
+          const cantidad = mov.tipo === 'entrada' ? mov.cantidad : -mov.cantidad;
+          return acc + cantidad;
+        }, 0);
+
+        let label = '';
+        switch (groupBy) {
+          case 'day':
+            label = format(interval, 'dd MMM', { locale: es });
+            break;
+          case 'week':
+            label = `S${format(interval, 'w', { locale: es })}`;
+            break;
+          case 'month':
+            label = format(interval, 'MMM yy', { locale: es });
+            break;
+          case 'year':
+            label = format(interval, 'yyyy', { locale: es });
+            break;
+        }
+
+        return {
+          fecha: label,
+          stock: stockChange
+        };
+      });
+
       // Calculate cumulative stock
       let cumulativeStock = 0;
-      const historyData = (movimientos || []).map((mov: any) => {
-        const cantidad = mov.tipo === 'entrada' ? mov.cantidad : -mov.cantidad;
-        cumulativeStock += cantidad;
+      const cumulativeData = historyData.map(item => {
+        cumulativeStock += item.stock;
         return {
-          fecha: format(new Date(mov.fecha), 'dd MMM', { locale: es }),
+          fecha: item.fecha,
           stock: cumulativeStock
         };
       });
 
-      setStockHistoryData(historyData);
+      setStockHistoryData(cumulativeData);
     } catch (error: any) {
       console.error("Error fetching stock history:", error);
     }
