@@ -24,6 +24,10 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
   const [movimientosData, setMovimientosData] = useState([]);
   const [productosData, setProductosData] = useState([]);
   const [stockHistoryData, setStockHistoryData] = useState([]);
+  const [topMovedProductsData, setTopMovedProductsData] = useState([]);
+  const [leastMovedProductsData, setLeastMovedProductsData] = useState([]);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<string>("");
   const [startDate, setStartDate] = useState<Date>(new Date(new Date().getFullYear(), 0, 1));
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [groupBy, setGroupBy] = useState<'day' | 'week' | 'month' | 'year'>('month');
@@ -34,9 +38,16 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
       fetchOrganizacion();
       fetchMovimientosData();
       fetchProductosData();
-      fetchStockHistory();
+      fetchAllProducts();
+      fetchTopAndLeastMovedProducts();
     }
   }, [organizacionId, startDate, endDate, groupBy]);
+
+  useEffect(() => {
+    if (selectedProductId && organizacionId) {
+      fetchStockHistory();
+    }
+  }, [selectedProductId, organizacionId, startDate, endDate]);
 
   const fetchOrganizacion = async () => {
     try {
@@ -153,52 +164,104 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
     }
   };
 
-  const fetchStockHistory = async () => {
+  const fetchAllProducts = async () => {
     try {
-      const { data: productos, error: prodError } = await supabase
+      const { data, error } = await supabase
         .schema('cold_stock')
         .from('producto')
         .select('producto_id, nombre')
-        .eq('organizacion_id', organizacionId)
-        .limit(5);
+        .eq('organizacion_id', organizacionId);
 
-      if (prodError) throw prodError;
+      if (error) throw error;
+      setAllProducts(data || []);
+      
+      if (data && data.length > 0 && !selectedProductId) {
+        setSelectedProductId(data[0].producto_id);
+      }
+    } catch (error: any) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
+  const fetchStockHistory = async () => {
+    if (!selectedProductId) return;
+    
+    try {
       const { data: movimientos, error: movError } = await supabase
         .schema('cold_stock')
         .from('movimiento')
         .select('*')
         .eq('organizacion_id', organizacionId)
+        .eq('producto_id', selectedProductId)
         .gte('fecha', startDate.toISOString())
         .lte('fecha', endDate.toISOString())
         .order('fecha', { ascending: true });
 
       if (movError) throw movError;
 
-      // Group movements by date and product
-      const groupedByDate: { [key: string]: any } = {};
-      
-      (movimientos || []).forEach((mov: any) => {
-        const fecha = format(new Date(mov.fecha), 'dd MMM', { locale: es });
-        
-        if (!groupedByDate[fecha]) {
-          groupedByDate[fecha] = { fecha };
-          (productos || []).forEach((prod: any) => {
-            groupedByDate[fecha][prod.nombre] = 0;
-          });
-        }
-        
-        const producto = (productos || []).find((p: any) => p.producto_id === mov.producto_id);
-        if (producto) {
-          const cantidad = mov.tipo === 'entrada' ? mov.cantidad : -mov.cantidad;
-          groupedByDate[fecha][producto.nombre] = (groupedByDate[fecha][producto.nombre] || 0) + cantidad;
-        }
+      const producto = allProducts.find(p => p.producto_id === selectedProductId);
+      if (!producto) return;
+
+      // Calculate cumulative stock
+      let cumulativeStock = 0;
+      const historyData = (movimientos || []).map((mov: any) => {
+        const cantidad = mov.tipo === 'entrada' ? mov.cantidad : -mov.cantidad;
+        cumulativeStock += cantidad;
+        return {
+          fecha: format(new Date(mov.fecha), 'dd MMM', { locale: es }),
+          stock: cumulativeStock
+        };
       });
 
-      const historyData = Object.values(groupedByDate);
       setStockHistoryData(historyData);
     } catch (error: any) {
       console.error("Error fetching stock history:", error);
+    }
+  };
+
+  const fetchTopAndLeastMovedProducts = async () => {
+    try {
+      const { data: movimientos, error } = await supabase
+        .schema('cold_stock')
+        .from('movimiento')
+        .select('producto_id, cantidad')
+        .eq('organizacion_id', organizacionId)
+        .gte('fecha', startDate.toISOString())
+        .lte('fecha', endDate.toISOString());
+
+      if (error) throw error;
+
+      // Group by product and sum quantities
+      const productMovements: { [key: string]: number } = {};
+      (movimientos || []).forEach((mov: any) => {
+        if (!productMovements[mov.producto_id]) {
+          productMovements[mov.producto_id] = 0;
+        }
+        productMovements[mov.producto_id] += mov.cantidad;
+      });
+
+      // Get product names
+      const productIds = Object.keys(productMovements);
+      const { data: productos, error: prodError } = await supabase
+        .schema('cold_stock')
+        .from('producto')
+        .select('producto_id, nombre')
+        .in('producto_id', productIds);
+
+      if (prodError) throw prodError;
+
+      // Combine data
+      const combined = (productos || []).map((prod: any) => ({
+        nombre: prod.nombre.length > 20 ? prod.nombre.substring(0, 20) + '...' : prod.nombre,
+        movimientos: productMovements[prod.producto_id] || 0
+      }));
+
+      // Sort and get top 5 and least 5
+      const sorted = combined.sort((a, b) => b.movimientos - a.movimientos);
+      setTopMovedProductsData(sorted.slice(0, 5));
+      setLeastMovedProductsData(sorted.slice(-5).reverse());
+    } catch (error: any) {
+      console.error("Error fetching top/least moved products:", error);
     }
   };
 
@@ -396,15 +459,30 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <BarChart3 className="h-5 w-5 text-cyan-400" />
-              Evolución de Stock por Producto
+              Trazabilidad de Stock por Producto
             </CardTitle>
             <CardDescription className="text-cyan-200">
-              Cambios en el inventario a lo largo del tiempo
+              Evolución del inventario en el tiempo para un producto específico
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-4">
+              <label className="text-sm font-medium text-cyan-200 mb-2 block">Seleccionar Producto</label>
+              <Select value={selectedProductId} onValueChange={setSelectedProductId}>
+                <SelectTrigger className="w-full bg-slate-800/50 border-cyan-500/50 text-white">
+                  <SelectValue placeholder="Seleccionar producto" />
+                </SelectTrigger>
+                <SelectContent className="bg-slate-800 border-cyan-500/50">
+                  {allProducts.map((producto) => (
+                    <SelectItem key={producto.producto_id} value={producto.producto_id} className="text-white hover:bg-cyan-500/20">
+                      {producto.nombre}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <ResponsiveContainer width="100%" height={350}>
-              <AreaChart data={stockHistoryData}>
+              <LineChart data={stockHistoryData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.1)" />
                 <XAxis dataKey="fecha" stroke="#a5f3fc" />
                 <YAxis stroke="#a5f3fc" />
@@ -417,17 +495,87 @@ export default function DataDashboardEnhanced({ organizacionId }: DataDashboardP
                   }}
                 />
                 <Legend />
-                {productosData.slice(0, 5).map((producto, index) => (
-                  <Area
-                    key={producto.nombre}
-                    type="monotone"
-                    dataKey={producto.nombre}
-                    stroke={`hsl(${180 + index * 40}, 70%, 50%)`}
-                    fill={`hsl(${180 + index * 40}, 70%, 50%)`}
-                    fillOpacity={0.2}
-                  />
-                ))}
-              </AreaChart>
+                <Line
+                  type="monotone"
+                  dataKey="stock"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2}
+                  name="Stock"
+                  dot={{ fill: 'hsl(var(--primary))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card border-cyan-500/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <TrendingUp className="h-5 w-5 text-cyan-400" />
+              Top 5 Productos Más Movidos
+            </CardTitle>
+            <CardDescription className="text-cyan-200">
+              Productos con mayor cantidad de movimientos
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={topMovedProductsData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.1)" />
+                <XAxis dataKey="nombre" angle={-45} textAnchor="end" height={100} stroke="#a5f3fc" />
+                <YAxis stroke="#a5f3fc" />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)', 
+                    border: '1px solid rgba(56, 189, 248, 0.2)',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                />
+                <Legend />
+                <Bar 
+                  dataKey="movimientos" 
+                  fill="hsl(var(--primary))" 
+                  name="Cantidad Total Movida"
+                  radius={[8, 8, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card border-cyan-500/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <TrendingUp className="h-5 w-5 text-cyan-400" />
+              Top 5 Productos Menos Movidos
+            </CardTitle>
+            <CardDescription className="text-cyan-200">
+              Productos con menor cantidad de movimientos
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={leastMovedProductsData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.1)" />
+                <XAxis dataKey="nombre" angle={-45} textAnchor="end" height={100} stroke="#a5f3fc" />
+                <YAxis stroke="#a5f3fc" />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)', 
+                    border: '1px solid rgba(56, 189, 248, 0.2)',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                />
+                <Legend />
+                <Bar 
+                  dataKey="movimientos" 
+                  fill="hsl(var(--destructive))" 
+                  name="Cantidad Total Movida"
+                  radius={[8, 8, 0, 0]}
+                />
+              </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
