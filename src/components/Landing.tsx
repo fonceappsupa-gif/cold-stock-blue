@@ -20,7 +20,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ScrollToTop from "./ScrollToTop";
 import { useEffect, useState } from "react";
-import canvasImage from "@/assets/Modelo Canvas ColdStock .png";
+import canvasImage from "@/assets/Modelo Canvas ColdStock.png";
 import logoColdStock from "@/assets/LogoColdStock.jpg";
 import PricingSection from "./PricingSection";
 import ContactSection from "./ContactSection";
@@ -395,7 +395,6 @@ export default function Landing() {
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>• Proveedores de equipos de refrigeración</li>
-                  <li>• Proveedores tecnológicos (AWS, Azure)</li>
                   <li>• Cámara de Comercio de Bucaramanga</li>
                   <li>• SENA y entidades de apoyo al emprendimiento</li>
                   <li>• Empresas aliadas del sector alimentos</li>
@@ -409,11 +408,10 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Desarrollo y mantenimiento del software</li>
+                  <li>• Desarrollo, actualización y mantenimiento del software</li>
                   <li>• Monitoreo en la nube y soporte técnico</li>
-                  <li>• Capacitación virtual para clientes</li>
-                  <li>• Estrategias de marketing digital</li>
-                  <li>• Alianzas comerciales estratégicas</li>
+                  <li>• Capacitación virtual para clientes nuevos</li>
+                  <li>• Alianzas comerciales estratégicas con proovedores de equipos de refrigeración</li>
                 </ul>
               </CardContent>
             </Card>
@@ -424,9 +422,11 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
+                  <li> ColdStock transforma la forma en que las empresas controlan sus productos perecederos. 
+                    Es una plataforma inteligente en la nube que permite gestionar inventarios en cuartos fríos con precisión y en tiempo real, 
+                    evitando pérdidas. Con alertas automáticas y reportes inteligentes, ColdStock convierte la gestión del frío en una ventaja competitiva rentable y confiable.</li>
                   <li>• Solución 100% en la nube accesible desde cualquier dispositivo</li>
                   <li>• Alertas inteligentes sobre vencimientos y stock</li>
-                  <li>• Reportes automatizados que ahorran tiempo</li>
                   <li>• Interfaz intuitiva y fácil de usar</li>
                 </ul>
               </CardContent>
@@ -441,7 +441,7 @@ export default function Landing() {
                   <li>• Equipo de desarrollo Full Stack</li>
                   <li>• Infraestructura en la nube</li>
                   <li>• Plataforma web y app ColdStock</li>
-                  <li>• Licencias y registro de marca</li>
+                  <li>• Material promocional y redes sociales.</li>
                 </ul>
               </CardContent>
             </Card>
@@ -453,9 +453,8 @@ export default function Landing() {
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>• Atención personalizada y soporte técnico</li>
-                  <li>• Capacitación inicial incluida</li>
-                  <li>• Canal directo por email y WhatsApp</li>
-                  <li>• Descuentos por referidos</li>
+                  <li>• Capacitación inicial incluida en la Suscripción</li>
+                  <li>• Canales directos por email y WhatsApp</li>
                 </ul>
               </CardContent>
             </Card>
@@ -468,11 +467,10 @@ export default function Landing() {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2 text-sm text-slate-300">
-                      <li>• Página web oficial</li>
-                      <li>• Redes sociales</li>
+                      <li>• Página web oficial con registro de prueba gratuita</li>
                       <li>• Contacto directo con empresas</li>
-                      <li>• Alianzas con distribuidores</li>
-                      <li>• Ferias y eventos del sector</li>
+                      <li>• Alianzas con distribuidores y camara de Comercio</li>
+                      <li>• Eventos del sector de alimentos y tecnología</li>
                     </ul>
                   </CardContent>
                 </Card>
@@ -483,10 +481,10 @@ export default function Landing() {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2 text-sm text-slate-300">
-                      <li>• Restaurantes y hoteles</li>
-                      <li>• Supermercados y distribuidores</li>
-                      <li>• Empresas farmacéuticas</li>
-                      <li>• PYMES de Bucaramanga</li>
+                      <li>• Restaurantes, panaderias y hoteles</li>
+                      <li>• Supermercados, frigorificos y distribuidores</li>
+                      <li>• Empresas del sector farmacéuticos</li>
+                      <li>• PYMES del area metropolitana de Bucaramanga</li>
                     </ul>
                   </CardContent>
                 </Card>
@@ -499,10 +497,10 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Desarrollo y alojamiento</li>
-                  <li>• Nómina del equipo</li>
-                  <li>• Marketing y publicidad</li>
-                  <li>• Licencias y gastos legales</li>
+                  <li>• Desarrollo, mantenimiento y alojamiento en la nube</li>
+                  <li>• Nómina del equipo, técnico y comercial</li>
+                  <li>• Marketing digital y publicidad</li>
+                  <li>• Licencias de Software, registros de marca y gastos legales</li>
                 </ul>
               </CardContent>
             </Card>
@@ -514,9 +512,10 @@ export default function Landing() {
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>• Suscripciones mensuales/anuales por usuario</li>
-                  <li>• Planes empresariales personalizados</li>
                   <li>• Servicios de implementación y capacitación</li>
-                  <li>• Consultoría especializada en gestión de inventarios</li>
+                  <li>• Plan Básico: control básico de inventarios.</li>
+                  <li>• Plan Pro: Dashboard, alertas en tiempo real, reportes avanzados.</li>
+                  <li>• Plan Empresarial: (Próximamente, en prueba) integración IoT, soporte prioritario.</li>
                 </ul>
               </CardContent>
             </Card>
