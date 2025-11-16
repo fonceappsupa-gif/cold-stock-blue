@@ -409,7 +409,7 @@ export default function Landing() {
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>• Desarrollo, actualización y mantenimiento del software</li>
-                  <li>• Monitoreo en la nube y soporte técnico</li>
+                  <li>• Monitoreo en la nube y soporte técnico continuo</li>
                   <li>• Capacitación virtual para clientes nuevos</li>
                   <li>• Alianzas comerciales estratégicas con proovedores de equipos de refrigeración</li>
                 </ul>
@@ -438,10 +438,10 @@ export default function Landing() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li>• Equipo de desarrollo Full Stack</li>
+                  <li>• Equipo humano desarrolladores</li>
                   <li>• Infraestructura en la nube</li>
                   <li>• Plataforma web y app ColdStock</li>
-                  <li>• Material promocional y redes sociales.</li>
+                  <li>• Material promocional y redes sociales</li>
                 </ul>
               </CardContent>
             </Card>
@@ -468,7 +468,7 @@ export default function Landing() {
                   <CardContent>
                     <ul className="space-y-2 text-sm text-slate-300">
                       <li>• Página web oficial con registro de prueba gratuita</li>
-                      <li>• Contacto directo con empresas</li>
+                      <li>• Contacto directo con empresa</li>
                       <li>• Alianzas con distribuidores y camara de Comercio</li>
                       <li>• Eventos del sector de alimentos y tecnología</li>
                     </ul>
@@ -512,7 +512,6 @@ export default function Landing() {
               <CardContent>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>• Suscripciones mensuales/anuales por usuario</li>
-                  <li>• Servicios de implementación y capacitación</li>
                   <li>• Plan Básico: control básico de inventarios.</li>
                   <li>• Plan Pro: Dashboard, alertas en tiempo real, reportes avanzados.</li>
                   <li>• Plan Empresarial: (Próximamente, en prueba) integración IoT, soporte prioritario.</li>
