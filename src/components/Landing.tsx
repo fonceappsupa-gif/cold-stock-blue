@@ -20,7 +20,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import ScrollToTop from "./ScrollToTop";
 import { useEffect, useState } from "react";
-import canvasImage from "@/assets/Modelo Canvas ColdStock.png";
+import canvasImage from "@/assets/ModeloCanvas.jpg";
 import logoColdStock from "@/assets/LogoColdStock.jpg";
 import PricingSection from "./PricingSection";
 import ContactSection from "./ContactSection";
@@ -165,7 +165,7 @@ export default function Landing() {
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 animate-fade-in">
               <span className="block mb-2 text-white neon-text">Cold Stock</span>
               <span className="block bg-gradient-to-r from-cyan-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent text-4xl md:text-5xl lg:text-6xl">
-                Gestión Inteligente de Cuartos Fríos
+                Gestión Optimizada de Cuartos Fríos
               </span>
             </h1>
             
@@ -571,14 +571,7 @@ export default function Landing() {
               Gestión inteligente de inventarios con control de caducidad. 
               Tecnología de punta para optimizar tu operación.
             </p>
-            <div className="flex justify-center space-x-6 mb-8">
-              <a href="#" className="text-slate-300 hover:text-cyan-400 transition-colors">
-                Iniciar Sesión
-              </a>
-              <a href="#" className="text-slate-300 hover:text-cyan-400 transition-colors">
-                Registrarse
-              </a>
-            </div>
+
             <p className="text-sm text-slate-400">
               © 2025 Cold Stock. Todos los derechos reservados.
             </p>

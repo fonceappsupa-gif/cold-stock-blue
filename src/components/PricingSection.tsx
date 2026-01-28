@@ -15,8 +15,7 @@ export default function PricingSection() {
         "1 usuario administrador",
         "2 operadores",
         "Alertas de vencimiento",
-        "Reportes básicos",
-        "Soporte por email"
+        "Reportes básicos"
       ],
       available: true,
       popular: false
@@ -32,9 +31,8 @@ export default function PricingSection() {
         "10 operadores",
         "Alertas inteligentes en tiempo real",
         "Reportes avanzados y analytics",
-        "Soporte prioritario 24/7",
-        "Integración con WhatsApp",
-        "Exportación de datos"
+        "Soporte prioritario 24/7"
+
       ],
       available: true,
       popular: true
